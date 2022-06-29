@@ -86,7 +86,7 @@ export async function getServerSideProps(context) {
 
     return {
       redirect: {
-        destination: '/login?callbackUrl=http://localhost:3000/pagination',
+        destination: '/login?callbackUrl=https://gym-app.ps-beta.com/pagination',
         permanent: false
       }
     }

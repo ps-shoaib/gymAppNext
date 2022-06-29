@@ -25,7 +25,7 @@ export const getServerSideProps : GetServerSideProps = async(context) =>{
     if(Object.keys(CookieObj).length == 0){
       return {
         redirect : {
-          destination : '/login?callbackUrl=http://localhost:3000/expenses/type/create',
+          destination : '/login?callbackUrl=https://gym-app.ps-beta.com/expenses/type/create',
           permanent : false
         }
       }

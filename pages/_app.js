@@ -92,7 +92,7 @@ MyApp.propTypes = {
 //     if (!CookieObj) {
 //       return {
 //         redirect: {
-//           destination: '/login?callbackUrl=http://localhost:3000',
+//           destination: '/login?callbackUrl=https://gym-app.ps-beta.com',
 //           permanent: false
 //         }
 //       }

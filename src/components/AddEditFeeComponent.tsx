@@ -146,7 +146,7 @@ const AddEditFeeComponent = ({ data }) => {
 
 
         if (UserObj == undefined) {
-            router.push('/login?callbackUrl=http://localhost:3000/fees/create');
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/fees/create');
         } else {
 
             console.log('values == ', values);

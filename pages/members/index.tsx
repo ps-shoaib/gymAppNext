@@ -208,7 +208,7 @@ const AllMembers = ({ data }) => {
         var UserObj = Cookie.get("UserObj");
 
         if (UserObj == undefined) {
-            router.push('/login?callbackUrl=http://localhost:3000/members');
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/members');
         } else {
             console.log('UserObj == ', JSON.parse(UserObj).id);
             values.Created_By = JSON.parse(UserObj).id;
@@ -306,7 +306,7 @@ const AllMembers = ({ data }) => {
 
 
                 if (UserObj == undefined) {
-                    router.push('/login?callbackUrl=http://localhost:3000/members');
+                    router.push('/login?callbackUrl=https://gym-app.ps-beta.com/members');
                 } else {
                     values.Created_By = JSON.parse(UserObj).id;
 

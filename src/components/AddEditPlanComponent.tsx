@@ -69,7 +69,7 @@ const AddEditPlanComponent = ({ data }) => {
 
 
         if (UserObj == undefined) {
-            router.push('/login?callbackUrl=http://localhost:3000/plan/create');
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/plan/create');
         } else {
             if (!isAddMode) {
                 values.Created_By = data.created_By;

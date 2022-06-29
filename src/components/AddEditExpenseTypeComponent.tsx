@@ -64,7 +64,7 @@ const AddEditExpenseTypeComponent = ({ data }) => {
 
 
         if (UserObj == undefined) {
-            router.push('/login?callbackUrl=http://localhost:3000/expenses/type/create');
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/expenses/type/create');
         } else {
 
             if (!isAddMode) {

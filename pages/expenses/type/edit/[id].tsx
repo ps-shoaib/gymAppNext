@@ -31,7 +31,7 @@ export default CreateEmployeeCategory
     if(Object.keys(CookieObj).length == 0){
       return {
         redirect : {
-          destination : `/login?callbackUrl=http://localhost:3000/expenses/type/edit/${id.toString()}`,
+          destination : `/login?callbackUrl=https://gym-app.ps-beta.com/expenses/type/edit/${id.toString()}`,
           permanent : false
         }
       }

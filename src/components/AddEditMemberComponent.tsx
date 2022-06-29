@@ -182,7 +182,7 @@ const AddEditMemberComponent = ({ data }) => {
 
 
         if (UserObj == undefined) {
-            router.push('/login?callbackUrl=http://localhost:3000/members/create');
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/members/create');
         } else {
 
             if (Plan == 0) {

@@ -114,7 +114,7 @@ const AddEditEmployeeComponent = ({ data }) => {
 
 
         if (UserObj == undefined) {
-            router.push('/login?callbackUrl=http://localhost:3000/employees/create');
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/employees/create');
         } else {
 
             if (!isAddMode) {
