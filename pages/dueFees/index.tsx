@@ -24,9 +24,23 @@ const AllDueFees = ({ data }) => {
 
     const [hasErrors, setHasErrors] = useState('')
 
-    // const [DueFees, SetFees] = useState([])
+    const [DueFees, SetFees] = useState<DueFeeModel[] | null>([])
+    // const { data } = await GetAllDueFees();
+    useEffect(() => {
+        
+      GetAllDueFees()
+      .then(res => {
+        SetFees(res.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setLoading(false);
+      })
+    
+    }, [])
+    
 
-    const DueFees : DueFeeModel[] = data;
+    // const DueFees : DueFeeModel[] = data;
 
 
 
@@ -195,24 +209,24 @@ export default AllDueFees
 
 
 
-export async function getServerSideProps(context) {
+// export async function getServerSideProps(context) {
 
 
 
 
 
-    const { data } = await GetAllDueFees();
+//     const { data } = await GetAllDueFees();
 
-    console.log('data from All DueFees == ', data);
-
-
-    return {
-        props: {
-            data: data
-        }
-    }
+//     console.log('data from All DueFees == ', data);
 
 
+//     return {
+//         props: {
+//             data: data
+//         }
+//     }
 
 
-}
+
+
+// }

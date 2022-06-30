@@ -25,9 +25,24 @@ const AllEmployees = ({ data }) => {
 
     const [hasErrors, setHasErrors] = useState('')
 
-    // const [Employees, SetEmployees] = useState([])
+    const [Employees, SetEmployees] = useState([])
+    // const { data } = await GetPlans();
+    useEffect(() => {
+      
+        GetPlans()
+        .then(res => {
+           SetEmployees(res.data)
+           setLoading(false);
+        })
+        .catch(err => {
+            setLoading(false);
+        })
+    
+  
+    }, [])
+    
 
-    const Employees = data;
+    // const Employees = data;
 
     const [show, setShow] = useState(false);
 
@@ -282,37 +297,37 @@ const AllEmployees = ({ data }) => {
 export default AllEmployees
 
 
-export const getServerSideProps = async (context) => {
+// export const getServerSideProps = async (context) => {
 
 
-    const { data } = await GetPlans();
+//     const { data } = await GetPlans();
 
-    console.log('data from All Plans == ', data);
-
-
-
-    let CookieObj = parseCookies(context.req);
+//     console.log('data from All Plans == ', data);
 
 
 
-    if (Object.keys(CookieObj).length == 0) {
-        return {
-            redirect: {
-                destination: '/login?callbackUrl=https://gym-app.ps-beta.com/plan',
-                permanent: false
-            }
-        }
-    }
+//     let CookieObj = parseCookies(context.req);
 
 
 
-    return {
-        props: {
-            data: data
-        }
-    }
+//     if (Object.keys(CookieObj).length == 0) {
+//         return {
+//             redirect: {
+//                 destination: '/login?callbackUrl=https://gym-app.ps-beta.com/plan',
+//                 permanent: false
+//             }
+//         }
+//     }
 
-}
+
+
+//     return {
+//         props: {
+//             data: data
+//         }
+//     }
+
+// }
 
 // export async function getServerSideProps(context) {
 
