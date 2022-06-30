@@ -31,9 +31,24 @@ const AllFees = ({ data }) => {
 
     const [hasErrors, setHasErrors] = useState('')
 
-    // const [Fees, SetFees] = useState([])
+    const [Fees, SetFees] = useState([])
 
-    const Fees = data;
+    useEffect(() => {
+      
+        GetFees()
+        .then(res => {
+            SetFees(res.data);
+            setLoading(false);
+        })
+        .catch(err => {
+            setLoading(false);
+        })
+
+    
+    }, [])
+    
+
+    // const Fees = data;
 
     const [show, setShow] = useState(false);
 
@@ -303,24 +318,24 @@ export default AllFees
 
 
 
-export async function getServerSideProps(context) {
+// export async function getServerSideProps(context) {
 
 
 
 
 
-    const { data } = await GetFees();
+//     const { data } = await GetFees();
 
-    console.log('data from All Fees == ', data);
-
-
-    return {
-        props: {
-            data: data
-        }
-    }
+//     console.log('data from All Fees == ', data);
 
 
+//     return {
+//         props: {
+//             data: data
+//         }
+//     }
 
 
-}
+
+
+// }

@@ -29,9 +29,26 @@ const AllCategories = ({ data }) => {
 
     const [hasErrors, setHasErrors] = useState('')
 
-    // const [Categories, SetCategories] = useState([])
+    const [Categories, SetCategories] = useState([])
 
-    const Categories = data;
+
+    useEffect(() => {
+
+        GetEmployeeCategories()
+            .then(res => {
+                SetCategories(res.data);
+                setLoading(false);
+            })
+            .catch(err => {
+                setLoading(false);
+            })
+
+
+    }, [])
+
+
+
+    // const Categories = data;
 
     const [show, setShow] = useState(false);
 
@@ -279,38 +296,38 @@ export default AllCategories
 
 
 
-export async function getServerSideProps(context) {
+// export async function getServerSideProps(context) {
 
 
 
 
 
-    const { data } = await GetEmployeeCategories();
+//     const { data } = await GetEmployeeCategories();
 
-    console.log('data from All categories == ', data);
-
-
-    let CookieObj = parseCookies(context.req);
+//     console.log('data from All categories == ', data);
 
 
-
-    if (Object.keys(CookieObj).length == 0) {
-        return {
-            redirect: {
-                destination: '/login?callbackUrl=https://gym-app.ps-beta.com/employees/categories',
-                permanent: false
-            }
-        }
-    }
-
-
-    return {
-        props: {
-            data: data
-        }
-    }
+//     let CookieObj = parseCookies(context.req);
 
 
 
+//     if (Object.keys(CookieObj).length == 0) {
+//         return {
+//             redirect: {
+//                 destination: '/login?callbackUrl=https://gym-app.ps-beta.com/employees/categories',
+//                 permanent: false
+//             }
+//         }
+//     }
 
-}
+
+//     return {
+//         props: {
+//             data: data
+//         }
+//     }
+
+
+
+
+// }
