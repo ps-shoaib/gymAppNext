@@ -24,19 +24,22 @@ const AllDueFees = ({ data }) => {
 
     const [hasErrors, setHasErrors] = useState('')
 
+    const GetDueFees = () => {
+
+        GetAllDueFees()
+        .then(res => {
+          SetFees(res.data);
+          setLoading(false);
+        })
+        .catch(err => {
+          setLoading(false);
+        })
+      }
+
     const [DueFees, SetFees] = useState<DueFeeModel[] | null>([])
     // const { data } = await GetAllDueFees();
     useEffect(() => {
-        
-      GetAllDueFees()
-      .then(res => {
-        SetFees(res.data);
-        setLoading(false);
-      })
-      .catch(err => {
-        setLoading(false);
-      })
-    
+        GetAllDueFees();
     }, [])
     
 

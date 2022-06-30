@@ -118,6 +118,12 @@ const AllMembers = ({ data }) => {
 
     useEffect(() => {
       
+       AllMembers();
+    
+
+    }, [])
+    
+    const AllMembers = () => {
         GetMembers()
         .then(res => {
             SetMembers(res.data);
@@ -126,10 +132,7 @@ const AllMembers = ({ data }) => {
         .catch(err => {
             setLoading(false);
         })
-    
-
-    }, [])
-    
+    }
 
     // const Members: [MemberListingModel] = data;
 
@@ -236,7 +239,7 @@ const AllMembers = ({ data }) => {
                     handleClose3();
 
                     SetShowDeactivateSpinner(false);
-
+                    AllMembers();
                     toast.warning('Member Updated successfully', { position: toast.POSITION.TOP_RIGHT });
 
                     router.push('/members');
@@ -279,7 +282,7 @@ const AllMembers = ({ data }) => {
                 handleClose();
 
                 SetshowDeleteSpinner(false);
-
+                AllMembers();
                 toast.warning('Member deleted successfully', { position: toast.POSITION.TOP_RIGHT });
 
                 router.push('/members');
@@ -340,7 +343,7 @@ const AllMembers = ({ data }) => {
                             handleClose2();
 
                             SetShowRejoinSpinner(false);
-
+                            AllMembers();
                             toast.warning('Member Rejoined successfully', { position: toast.POSITION.TOP_RIGHT });
 
                             router.push('/members');

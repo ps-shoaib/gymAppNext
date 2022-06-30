@@ -34,17 +34,21 @@ const AllEmployees = ({ data }) => {
     const [Employees, SetEmployees] = useState([])
     // const { data } = await GetEmployees();
 
+    const GetAllEmps = () => {
+        GetEmployees()
+            .then(res => {
+                SetEmployees(res.data);
+            })
+            .catch(err => {
+
+            })
+    }
     useEffect(() => {
-      GetEmployees()
-      .then(res => {
-        SetEmployees(res.data);
-      })
-      .catch(err => {
-        
-      })
-    
+
+        GetAllEmps();
+
     }, [])
-    
+
 
     // const Employees = data;
 
@@ -76,7 +80,9 @@ const AllEmployees = ({ data }) => {
                 handleClose();
 
                 SetshowDeleteSpinner(false);
-
+                
+                GetAllEmps();
+                
                 toast.warning('Employee deleted successfully', { position: toast.POSITION.TOP_RIGHT });
 
                 router.push('/employees');
