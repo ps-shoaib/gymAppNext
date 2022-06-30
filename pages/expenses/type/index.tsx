@@ -30,9 +30,25 @@ const AllCategories = ({ data }) => {
 
     const [hasErrors, setHasErrors] = useState('')
 
-    // const [Categories, SetCategories] = useState([])
+    const [Categories, SetCategories] = useState([])
+    //     const { data } = await GetExpenseTypes();
+    useEffect(() => {
 
-    const Categories = data;
+        GetExpenseTypes()
+            .then(res => {
+                SetCategories(res.data);
+                setLoading(false)
+            })
+            .catch(err => {
+                setLoading(false);
+            })
+
+
+    }, [])
+
+
+
+    // const Categories = data;
 
     const [show, setShow] = useState(false);
 
@@ -281,36 +297,36 @@ export default AllCategories
 
 
 
-export async function getServerSideProps(context) {
+// export async function getServerSideProps(context) {
 
 
 
 
 
-    const { data } = await GetExpenseTypes();
+//     const { data } = await GetExpenseTypes();
 
-    console.log('data from All categories == ', data);
+//     console.log('data from All categories == ', data);
 
-    let CookieObj = parseCookies(context.req);
-
-
-
-    if (Object.keys(CookieObj).length == 0) {
-        return {
-            redirect: {
-                destination: '/login?callbackUrl=https://gym-app.ps-beta.com/expenses/type',
-                permanent: false
-            }
-        }
-    }
-
-    return {
-        props: {
-            data: data
-        }
-    }
+//     let CookieObj = parseCookies(context.req);
 
 
 
+//     if (Object.keys(CookieObj).length == 0) {
+//         return {
+//             redirect: {
+//                 destination: '/login?callbackUrl=https://gym-app.ps-beta.com/expenses/type',
+//                 permanent: false
+//             }
+//         }
+//     }
 
-}
+//     return {
+//         props: {
+//             data: data
+//         }
+//     }
+
+
+
+
+// }
