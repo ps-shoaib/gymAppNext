@@ -17,7 +17,7 @@ import { parseCookies } from '../../src/parseCookies'
 
 
 
-const AllEmployees = ({ data }) => {
+const AllPlans = ({ data }) => {
 
     const router = useRouter();
 
@@ -25,24 +25,28 @@ const AllEmployees = ({ data }) => {
 
     const [hasErrors, setHasErrors] = useState('')
 
-    const [Employees, SetEmployees] = useState([])
+    const [Plans, SetPlans] = useState([])
     // const { data } = await GetPlans();
     useEffect(() => {
-      
-        GetPlans()
-        .then(res => {
-           SetEmployees(res.data)
-           setLoading(false);
-        })
-        .catch(err => {
-            setLoading(false);
-        })
-    
-  
-    }, [])
-    
 
-    // const Employees = data;
+        GetAllPlans();
+
+    }, [])
+
+    const GetAllPlans = () => {
+        GetPlans()
+            .then(res => {
+                SetPlans(res.data)
+                setLoading(false);
+            })
+            .catch(err => {
+                setLoading(false);
+            })
+
+    }
+
+
+    // const Plans = data;
 
     const [show, setShow] = useState(false);
 
@@ -72,7 +76,7 @@ const AllEmployees = ({ data }) => {
                 handleClose();
 
                 SetshowDeleteSpinner(false);
-
+                GetAllPlans();
                 toast.warning('Plan deleted successfully', { position: toast.POSITION.TOP_RIGHT });
 
                 router.push('/plan');
@@ -163,7 +167,7 @@ const AllEmployees = ({ data }) => {
 
                                         {/* (SetSpacetypes : {id : number, name : string}[]) => ( */}
                                         {
-                                            Employees.map(
+                                            Plans.map(
                                                 (system: {
                                                     id: number, name: string, membershipFee: number, note: string, registrationFee: string
                                                     // , createdOn: string, isActive : boolean
@@ -181,7 +185,7 @@ const AllEmployees = ({ data }) => {
                                                         <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.membershipFee}</td>
                                                         <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.note}</td>
 
-                                                        {/* Employees/create-role/:id */}
+                                                        {/* Plans/create-role/:id */}
 
                                                         <td className='ps-4 w-100px'>
 
@@ -294,7 +298,7 @@ const AllEmployees = ({ data }) => {
 
 }
 
-export default AllEmployees
+export default AllPlans
 
 
 // export const getServerSideProps = async (context) => {
@@ -335,9 +339,9 @@ export default AllEmployees
 
 
 
-//     const { data } = await GetEmployees();
+//     const { data } = await GetPlans();
 
-//     console.log('data from All Employees == ', data);
+//     console.log('data from All Plans == ', data);
 
 
 //     return {

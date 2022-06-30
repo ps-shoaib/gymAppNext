@@ -37,7 +37,13 @@ const AllExpenses = ({ data }) => {
     // const { data } = await GetExpenses();
 
     useEffect(() => {
-      
+        
+        AllExpenses();
+    
+    }, [])
+
+
+    const AllExpenses = () => {
         GetExpenses()
         .then(res => {
             SetExpenses(res.data)
@@ -46,8 +52,8 @@ const AllExpenses = ({ data }) => {
         .catch(err => {
             setLoading(false);
         })
-    
-    }, [])
+
+    }
     
 
     // const Expenses = data;
@@ -80,7 +86,7 @@ const AllExpenses = ({ data }) => {
                 handleClose();
 
                 SetshowDeleteSpinner(false);
-
+                AllExpenses();
                 toast.warning('Expenses deleted successfully', { position: toast.POSITION.TOP_RIGHT });
 
                 router.push('/expenses');

@@ -35,6 +35,13 @@ const AllFees = ({ data }) => {
 
     useEffect(() => {
       
+        AllFees();
+
+    
+    }, [])
+    
+
+    const AllFees = () => {
         GetFees()
         .then(res => {
             SetFees(res.data);
@@ -44,9 +51,7 @@ const AllFees = ({ data }) => {
             setLoading(false);
         })
 
-    
-    }, [])
-    
+    }
 
     // const Fees = data;
 
@@ -78,7 +83,7 @@ const AllFees = ({ data }) => {
                 handleClose();
 
                 SetshowDeleteSpinner(false);
-
+                AllFees();
                 toast.warning('Fee deleted successfully', { position: toast.POSITION.TOP_RIGHT });
 
                 router.push('/fees');
