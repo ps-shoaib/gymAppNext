@@ -6,6 +6,7 @@ export const API_URL = process.env.API_URL || 'https://gym-api.ps-beta.com'
 
 // console.log('api url == ', API_URL);
 
+
  const GET_USER_BY_ACCESSTOKEN_URL = `${API_URL}/api/Account/GetUserByToken`
  const LOGIN_URL = `${API_URL}/api/Account/Login`
  const REGISTER_URL = `${API_URL}/api/Account/SignUp`
