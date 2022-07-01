@@ -76,26 +76,6 @@ const DueFeeDetails = ({ data }) => {
                         </td>
                     </tr>
 
-
-
-                    <tr className={'border border-1'}>
-                        <td className='ps-4 w-150px text-dark   text-hover-primary border border-1'>
-                        Paid Fee
-                        </td>
-                        <td className='ps-4 w-150px text-dark  text-hover-primary border border-1'>
-                            {DueFeeDetails.amount_Received}
-                        </td>
-                    </tr>
-
-                    <tr className={'border border-1'}>
-                        <td className='ps-4 w-100px text-dark text-hover-primary border border-1'>
-                            Due Fee
-                        </td>
-                        <td className='ps-4 w-100px text-dark  text-hover-primary border border-1'>
-                            {DueFeeDetails.dueFee}
-                        </td>
-                    </tr>
-
                     <tr className={'border border-1'}>
                         <td className='ps-4 w-100px text-dark text-hover-primary border border-1'>
                             Training Fee
@@ -114,6 +94,52 @@ const DueFeeDetails = ({ data }) => {
                             {DueFeeDetails.membershipFee}
                         </td>
                     </tr>
+
+
+                    <tr className={'border border-1'}>
+                        <td className='ps-4 w-150px text-dark   text-hover-primary border border-1'>
+                        Paid Fee
+                        </td>
+                        <td className='ps-4 w-150px text-dark  text-hover-primary border border-1'>
+                            {DueFeeDetails.trainer_Fee_Received + DueFeeDetails.membership_Fee_Received}
+                        </td>
+                    </tr>
+
+                    <tr className={'border border-1'}>
+                        <td className='ps-4 w-150px text-dark   text-hover-primary border border-1'>
+                        Membership Paid Fee
+                        </td>
+                        <td className='ps-4 w-150px text-dark  text-hover-primary border border-1'>
+                            {DueFeeDetails.membershipFee - DueFeeDetails.membership_Fee_Received}
+                        </td>
+                    </tr>
+                    <tr className={'border border-1'}>
+                        <td className='ps-4 w-150px text-dark   text-hover-primary border border-1'>
+                        Training Paid Fee
+                        </td>
+                        <td className='ps-4 w-150px text-dark  text-hover-primary border border-1'>
+                            {DueFeeDetails.trainerFee - DueFeeDetails.trainer_Fee_Received}
+                        </td>
+                    </tr>
+
+                    <tr className={'border border-1'}>
+                        <td className='ps-4 w-150px text-dark   text-hover-primary border border-1'>
+                        Admission Due Fee
+                        </td>
+                        <td className='ps-4 w-150px text-dark  text-hover-primary border border-1'>
+                            {DueFeeDetails.isAdmissionFee_Received ? '0' : '2000'}
+                        </td>
+                    </tr>
+
+                    <tr className={'border border-1'}>
+                        <td className='ps-4 w-100px text-dark text-hover-primary border border-1'>
+                          Total  Due Fee
+                        </td>
+                        <td className='ps-4 w-100px text-dark  text-hover-primary border border-1'>
+                            {DueFeeDetails.dueFee}
+                        </td>
+                    </tr>
+
 
 
 

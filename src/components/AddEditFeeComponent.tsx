@@ -2,7 +2,7 @@ import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import { Form as BSForm, Button, Card, FormLabel, FormSelect, Spinner } from 'react-bootstrap'
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ChangeEventHandler } from 'react'
 
 
 
@@ -35,32 +35,17 @@ const AddEditFeeComponent = ({ data }) => {
     const [showMemberErrorMsg, setShowMemberErrorMsg] = useState(false)
     const [Member, setMember] = useState(0)
 
+    const [IsAdmissionFee_Received, setIsAdmissionFee_Received] = useState(false)
 
-    const handleChange = (selectedOption) => {
-
-        if (showMemberErrorMsg) {
-            setShowMemberErrorMsg(false);
-        }
-
-        setselectedOption(selectedOption);
-        setMember(selectedOption.value);
-
-        if (selectedOption.value != 0) {
-            axios.get(`${API_URL}/api/Member/MemberFeeInfo/${selectedOption.value}`)
-                .then(res => {
-                    setFeeInfo(res.data);
-                })
-        } else {
-            setFeeInfo({ amount: 0, trainerFee: 0, membershipFee: 0, membership_Date: '', contactNo: '', dueFee : 0 });
-        }
-        // console.log('e.target.value == ', e.target.value);
+    const [membership_Fee_Received, setMembership_Fee_Received] = useState(0)
+    const [trainer_Fee_Received, setTrainer_Fee_Received] = useState(0)
 
 
 
-        console.log('Selected Option Id == ', selectedOption.value);
-    };
-
-
+    const [feeInfo, setFeeInfo] = useState({
+        amount: 0, trainerFee: 0, membershipFee: 0, membership_Date: '', contactNo: '',
+        dueFee: 0, membership_Fee_Received: 0, trainer_Fee_Received: 0, isAdmissionFee_Received: false
+    })
 
     const [Id, setId] = useState(0)
 
@@ -82,22 +67,71 @@ const AddEditFeeComponent = ({ data }) => {
         }, []
     )
 
-    const initialValues = {
-        Amount_Received : ''
-    }
 
-    console.log('data == ', data);
+
+
+
+
 
     const isAddMode = data == '';
+
+    const handleChange = (selectedOption) => {
+
+        if (showMemberErrorMsg) {
+            setShowMemberErrorMsg(false);
+        }
+
+        setselectedOption(selectedOption);
+        setMember(selectedOption.value);
+
+        if (selectedOption.value != 0) {
+            axios.get(`${API_URL}/api/Member/MemberFeeInfo/${selectedOption.value}`)
+                .then(res => {
+
+                     setMembership_Fee_Received(res.data.membershipFee);
+                     setTrainer_Fee_Received(res.data.trainerFee);
+
+
+
+                    setFeeInfo(res.data);
+
+
+
+                    console.log('res.data == ***', res.data);
+
+
+
+
+                    setIsAdmissionFee_Received(res.data.isAdmissionFee_Received);
+                })
+
+
+        } else {
+            setFeeInfo({ amount: 0, trainerFee: 0, membershipFee: 0, membership_Date: '', contactNo: '', dueFee: 0, membership_Fee_Received: 0, trainer_Fee_Received: 0, isAdmissionFee_Received: false });
+        }
+        // console.log('e.target.value == ', e.target.value);
+
+
+
+        console.log('Selected Option Id == ', selectedOption.value);
+    };
+
 
     useEffect(() => {
         if (!isAddMode) {
             setId(data.id);
             setMember(data.member_Id);
 
-            initialValues.Amount_Received = data.amount_Received;
 
-            setFeeInfo({ amount: data.amount, trainerFee: data.trainerFee, membershipFee: data.membershipFee, membership_Date: data.membership_Date, contactNo: data.contactNo , dueFee  : data.dueFee });
+            setMembership_Fee_Received(data.membership_Fee_Received);
+            setTrainer_Fee_Received(data.trainer_Fee_Received);
+            setIsAdmissionFee_Received(data.isAdmissionFee_Received)
+
+            setFeeInfo({
+                amount: data.amount, trainerFee: data.trainerFee, membershipFee: data.membershipFee, membership_Date: data.membership_Date, contactNo: data.contactNo, dueFee: data.dueFee,
+                membership_Fee_Received: data.membership_Fee_Received, trainer_Fee_Received: data.trainer_Fee_Received, isAdmissionFee_Received: data.isAdmissionFee_Received
+            });
+
 
             setselectedOption({ label: `${data.memberName} ,ID : ${data.member_Id}`, value: `${data.member_Id}` });
 
@@ -116,9 +150,6 @@ const AddEditFeeComponent = ({ data }) => {
 
     const router = useRouter();
 
-    const validationSchema = Yup.object().shape({
-        Amount_Received : Yup.string().required('Required')
-    })
 
     function formatDate(date) {
         var d = new Date(date),
@@ -134,7 +165,16 @@ const AddEditFeeComponent = ({ data }) => {
         return [year, month, day].join('-');
     }
 
-    const onsubmit = (values) => {
+
+
+
+    const onsubmit = () => {
+        let values : any = {};
+
+        values.isAdmissionFee_Received = IsAdmissionFee_Received;
+        values.membership_Fee_Received = membership_Fee_Received;
+        values.trainer_Fee_Received = trainer_Fee_Received;
+
 
         console.log('selectedOption -------*** ', selectedOption);
 
@@ -262,182 +302,210 @@ const AddEditFeeComponent = ({ data }) => {
 
     }
 
-    const [feeInfo, setFeeInfo] = useState({ amount: 0, trainerFee: 0, membershipFee: 0, membership_Date: '', contactNo: '', dueFee : 0 })
-
-
 
 
 
     return (
-        <>
-            <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={onsubmit}
-            >
-                {
-                    formik => {
-                        return (
-                            <div className={'card  mb-xl-4 w-100'}>
+        <div className={'card  mb-xl-4 w-100'}>
 
 
-                                <Form className='m-3'>
+            <BSForm className='m-3'>
 
 
 
 
-                                    <div className='d-flex justify-content-between p-3 m-2'>
+                <div className='d-flex justify-content-between p-3 m-2'>
 
-                                        {!isAddMode ? <h3 className=''>Update Fee</h3> : <h3 className=''>Receive Fee</h3>}
-                                        <button
-                                            type='button'
-                                            className='btn btn-primary d-flex'
-                                            onClick={() => { router.push('/fees') }}
-                                        >
+                    {!isAddMode ? <h3 className=''>Update Fee</h3> : <h3 className=''>Receive Fee</h3>}
+                    <button
+                        type='button'
+                        className='btn btn-primary d-flex'
+                        onClick={() => { router.push('/fees') }}
+                    >
 
-                                            <Image
-                                                src={icon1}
-                                                alt={icon1}
-                                                width="23"
-                                                height="23"
-                                                className="roundedCircle m-1"
-                                            />
-                                            <span className='m-1'>
+                        <Image
+                            src={icon1}
+                            alt={icon1}
+                            width="23"
+                            height="23"
+                            className="roundedCircle m-1"
+                        />
+                        <span className='m-1'>
 
-                                                Back
-                                            </span>
-                                        </button>
-
-
-                                    </div>
+                            Back
+                        </span>
+                    </button>
 
 
-                                    {hasErrors ? (
-                                        <div className='m-5'>
-                                            <div className='mb-lg-15 alert alert-danger'>
-                                                <div className='alert-text font-weight-bold'>{hasErrors}</div>
-                                            </div>
-                                        </div>
-                                    ) : ''}
+                </div>
 
 
-                                    <div className='m-3'>
-                                        <h6>Select Member </h6>
-                                        <Select
-                                            value={selectedOption}
-                                            onChange={handleChange}
-                                            options={options}
-                                        />
-                                        {showMemberErrorMsg ? (
-                                            <div className='text-danger'>{'Required'}</div>
-                                        ) : ''}
+                {hasErrors ? (
+                    <div className='m-5'>
+                        <div className='mb-lg-15 alert alert-danger'>
+                            <div className='alert-text font-weight-bold'>{hasErrors}</div>
+                        </div>
+                    </div>
+                ) : ''}
 
 
-                                    </div>
-
-                                    <FormikControl
-                                        control='input'
-                                        type='number'
-                                        label='Amount Received'
-                                        name='Amount_Received'
-                                        className='m-3'
-                                    />
-
-
-
-                                    <div className='m-3'>
+                <div className='m-3'>
+                    <h6>Select Member </h6>
+                    <Select
+                        value={selectedOption}
+                        onChange={handleChange}
+                        options={options}
+                        isDisabled={!isAddMode}
+                    />
+                    {showMemberErrorMsg ? (
+                        <div className='text-danger'>{'Required'}</div>
+                    ) : ''}
 
 
-                                        <h6>Receiving Date </h6>
-                                        <div className='d-flex'>
-                                            <DateView
-                                                className="form-control"
-                                                // name='startDate'
-                                                id='dt1'
-                                                selected={startDate}
-                                                onChange={(date) => setStartDate(date)}
-                                                selectsStart
-                                                startDate={startDate}
-                                            // endDate={endDate}
-                                            // dateFormat="MM/yyyy"
-                                            // showMonthYearPicker
+                </div>
+
+                <div className=' d-flex'>
+                    <div className='m-3 w-100'>
+                        <label htmlFor={'membership_Fee_Received'} className="h6">{'membership Fee Received'}</label>
+                        <BSForm.Control
+                            // defaultValue={defaultValue !== undefined && defaultValue}
+                            type={'number'}
+                            step={1}
+                            name='membership_Fee_Received'
+                            value={membership_Fee_Received}
+                            onChange={(e) => {setMembership_Fee_Received(parseInt(e.target.value))}}
+                        
+                        />
+                    </div>
+
+                    <div className='m-3 w-100'>
+                        <label htmlFor={'trainer_Fee_Received'} className="h6">{'Trainer Fee Received'}</label>
+                        <BSForm.Control
+                            type={'number'}
+                            step={1}
+                            name='trainer_Fee_Received'
+                            value={trainer_Fee_Received}
+                            onChange={(e) => {setTrainer_Fee_Received(parseInt(e.target.value))}}
+
+                        />
+                    </div>
+                </div>
+
+                
+                <div className='p-2 m-2'>
+                    <BSForm.Check
+                        type="checkbox"
+                        label="Is Admission Fee Received ?"
+                        name="isAdmissionFee_Received"
+                        //  id="requiredChk"
+                        disabled={feeInfo.isAdmissionFee_Received}
+                        checked={IsAdmissionFee_Received || feeInfo.isAdmissionFee_Received}
+                        onChange={(e) => {}}
+                        onClick={
+                            (e: React.MouseEvent<HTMLInputElement>) => {
+                                if (e.currentTarget.checked) {
+                                    setIsAdmissionFee_Received(true);
+                                }
+                                else {
+                                    setIsAdmissionFee_Received(false);
+                                }
+                            }
+                        }
+                    />
+                </div>
 
 
-                                            />
-
-                                            <label htmlFor='dt1' className='m-2'>
-                                                <span className=""
-                                                    style={
-                                                        { 'position': 'relative', 'right': '37px' }
-                                                    }
-
-                                                >
-                                                    <Image
-                                                        src={icon3}
-                                                        alt={icon3}
-                                                        width="23"
-                                                        height="23"
-                                                    // className="roundedCircle"
-                                                    />
+                <div className='m-3'>
 
 
-                                                </span>
-                                            </label>
-                                        </div>
-
-                                    </div>
-
-
-
-
-
-                                    {feeInfo.amount !== 0 &&
-                                        <div className=' bg-light justify-content-center d-flex flex-wrap'>
-
-                                            <span className='text-muted fw-bolder m-2'>Membership Date  :: </span><span className='text-muted  m-2'>{new Date(feeInfo.membership_Date).toLocaleDateString()}</span>
-                                            <span className='text-muted fw-bolder m-2'>Contact :: </span><span className='text-muted m-2'>{feeInfo.contactNo ? feeInfo.contactNo : '--'}</span>
-                                            <span className='text-muted fw-bolder m-2'>Due Fee :: </span><span className='text-muted m-2'>{feeInfo.dueFee ? feeInfo.dueFee : '--'}</span>
-                                            <span className='text-muted fw-bolder m-2'>Trainer Fee :: </span><span className='text-muted m-2'>{feeInfo.trainerFee}</span>
-                                            <span className='text-muted fw-bolder m-2'> Membership Fee :: </span><span className='text-muted m-2'>{feeInfo.membershipFee}</span>
-                                            <span className='text-muted fw-bolder m-2'>Total Fee :: </span><span className='text-muted m-2'>{feeInfo.amount}</span>
+                    <h6>Receiving Date </h6>
+                    <div className='d-flex'>
+                        <DateView
+                            className="form-control"
+                            // name='startDate'
+                            id='dt1'
+                            selected={startDate}
+                            onChange={(date) => setStartDate(date)}
+                            selectsStart
+                            startDate={startDate}
+                        // endDate={endDate}
+                        // dateFormat="MM/yyyy"
+                        // showMonthYearPicker
 
 
+                        />
 
-                                        </div>
-                                    }
+                        <label htmlFor='dt1' className='m-2'>
+                            <span className=""
+                                style={
+                                    { 'position': 'relative', 'right': '37px' }
+                                }
 
+                            >
+                                <Image
+                                    src={icon3}
+                                    alt={icon3}
+                                    width="23"
+                                    height="23"
+                                // className="roundedCircle"
+                                />
+
+
+                            </span>
+                        </label>
+                    </div>
+
+                </div>
 
 
 
 
-                                    <div className='m-5'>
-                                        <div className='m-5'>
-                                            <Button variant="success" className="w-100 p-2" type='submit'>
 
-                                                <div className='d-flex justify-content-center'>
-                                                    {!isAddMode ? <span>Update </span> : <span> Create</span>}
+                {/* {feeInfo.amount !== 0 && */}
+                    <div className=' bg-light justify-content-center d-flex flex-wrap'>
 
-                                                    {loading && (
-                                                        <span className='indicator-progress' style={{ display: 'block' }}>
-                                                            <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
-                                                        </span>
-                                                    )}
-                                                </div>
+                        <span className='text-muted fw-bolder m-2'>Membership Date  :: </span><span className='text-muted  m-2'>{new Date(feeInfo.membership_Date).toLocaleDateString()}</span>
+                        <span className='text-muted fw-bolder m-2'>Contact :: </span><span className='text-muted m-2'>{feeInfo.contactNo ? feeInfo.contactNo : '--'}</span>
+                        <span className='text-muted fw-bolder m-2'>Due Fee :: </span><span className='text-muted m-2'>{feeInfo.dueFee ? feeInfo.dueFee : '--'}</span>
+                        <span className='text-muted fw-bolder m-2'>Trainer Fee :: </span><span className='text-muted m-2'>{feeInfo.trainerFee}</span>
+                        <span className='text-muted fw-bolder m-2'> Membership Fee :: </span><span className='text-muted m-2'>{feeInfo.membershipFee}</span>
+                        <span className='text-muted fw-bolder m-2'>Total Fee :: </span><span className='text-muted m-2'>{feeInfo.amount}</span>
 
-                                            </Button>
-                                        </div>
-                                    </div>
+                        <span className='text-muted fw-bolder m-2'>Membership Fee Received :: </span><span className='text-muted m-2'>{feeInfo.membership_Fee_Received}</span>
+                        <span className='text-muted fw-bolder m-2'> trainer Fee Received :: </span><span className='text-muted m-2'>{feeInfo.trainer_Fee_Received}</span>
+                        <span className='text-muted fw-bolder m-2'>Is Admission Fee Received :: </span><span className='text-muted m-2'>{feeInfo.isAdmissionFee_Received ? 'Recieved' : 'Not Received'}</span>
 
 
+                    </div>
+                {/* } */}
 
-                                </Form>
 
+
+
+
+                <div className='m-5'>
+                    <div className='m-5'>
+                        <Button variant="success" className="w-100 p-2" onClick={onsubmit}>
+
+                            <div className='d-flex justify-content-center'>
+                                {!isAddMode ? <span>Update </span> : <span> Create</span>}
+
+                                {loading && (
+                                    <span className='indicator-progress' style={{ display: 'block' }}>
+                                        <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
+                                    </span>
+                                )}
                             </div>
-                        )
-                    }
-                }
-            </Formik>
-        </>
+
+                        </Button>
+                    </div>
+                </div>
+
+
+
+            </BSForm>
+
+        </div>
     )
 }
 
