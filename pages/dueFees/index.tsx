@@ -39,7 +39,7 @@ const AllDueFees = ({ data }) => {
     const [DueFees, SetFees] = useState<DueFeeModel[] | null>([])
     // const { data } = await GetAllDueFees();
     useEffect(() => {
-        GetAllDueFees();
+        GetDueFees();
     }, [])
     
 
@@ -145,7 +145,8 @@ const AllDueFees = ({ data }) => {
 
 
 
-                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.amount_Received}</td>
+                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.trainer_Fee_Received + system.membership_Fee_Received}</td>
+
                                                         <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.dueFee}</td>
 
 

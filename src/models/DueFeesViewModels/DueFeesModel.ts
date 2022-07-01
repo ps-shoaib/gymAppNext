@@ -4,7 +4,10 @@ export interface DueFeeModel{
         id: number, receiving_Date: string,
         amount: number, trainerFee: number,
         membershipFee: number, member_Name: string,
-        amount_Received: 0, dueFee: 0
+        trainer_Fee_Received: 0,
+        membership_Fee_Received : 0,
+        isAdmissionFee_Received : boolean,
+        dueFee: 0
         ,
         membership_Date : string,
         member_Address : string,
