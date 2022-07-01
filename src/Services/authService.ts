@@ -2,9 +2,9 @@ import axios from "axios"
 import { string } from "yup"
 
 
-export const API_URL = process.env.API_URL || 'https://gym-api.ps-beta.com'
+export const API_URL = process.env.API_URL  || 'https://localhost:44303'
 
-// console.log('api url == ', API_URL);
+console.log('api url == ', API_URL);
 
 
  const GET_USER_BY_ACCESSTOKEN_URL = `${API_URL}/api/Account/GetUserByToken`

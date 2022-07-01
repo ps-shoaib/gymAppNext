@@ -111,12 +111,30 @@ const AllMembers = ({ data }) => {
 
     const [hasErrors, setHasErrors] = useState('')
 
-    // const [Members, SetMembers] = useState([])
+    const [Members, SetMembers] = useState<MemberListingModel[] | null>([])
 
-    console.log('data In All Members== ', data);
+    // console.log('data In All Members== ', data);
+    // const { data } = await GetMembers();
 
+    useEffect(() => {
+      
+       AllMembers();
+    
 
-    const Members: [MemberListingModel] = data;
+    }, [])
+    
+    const AllMembers = () => {
+        GetMembers()
+        .then(res => {
+            SetMembers(res.data);
+            setLoading(false);
+        })
+        .catch(err => {
+            setLoading(false);
+        })
+    }
+
+    // const Members: [MemberListingModel] = data;
 
 
     const [search, setSearch] = React.useState('');
@@ -221,7 +239,7 @@ const AllMembers = ({ data }) => {
                     handleClose3();
 
                     SetShowDeactivateSpinner(false);
-
+                    AllMembers();
                     toast.warning('Member Updated successfully', { position: toast.POSITION.TOP_RIGHT });
 
                     router.push('/members');
@@ -264,7 +282,7 @@ const AllMembers = ({ data }) => {
                 handleClose();
 
                 SetshowDeleteSpinner(false);
-
+                AllMembers();
                 toast.warning('Member deleted successfully', { position: toast.POSITION.TOP_RIGHT });
 
                 router.push('/members');
@@ -325,7 +343,7 @@ const AllMembers = ({ data }) => {
                             handleClose2();
 
                             SetShowRejoinSpinner(false);
-
+                            AllMembers();
                             toast.warning('Member Rejoined successfully', { position: toast.POSITION.TOP_RIGHT });
 
                             router.push('/members');
@@ -900,24 +918,24 @@ export default AllMembers
 
 
 
-export async function getServerSideProps(context) {
+// export async function getServerSideProps(context) {
 
 
 
 
 
-    const { data } = await GetMembers();
+//     const { data } = await GetMembers();
 
-    console.log('data from All Members == ', data);
-
-
-    return {
-        props: {
-            data: data
-        }
-    }
+//     console.log('data from All Members == ', data);
 
 
+//     return {
+//         props: {
+//             data: data
+//         }
+//     }
 
 
-}
+
+
+// }

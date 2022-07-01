@@ -33,9 +33,30 @@ const AllExpenses = ({ data }) => {
 
     const [hasErrors, setHasErrors] = useState('')
 
-    // const [Expenses, SetExpenses] = useState([])
+    const [Expenses, SetExpenses] = useState([])
+    // const { data } = await GetExpenses();
 
-    const Expenses = data;
+    useEffect(() => {
+        
+        AllExpenses();
+    
+    }, [])
+
+
+    const AllExpenses = () => {
+        GetExpenses()
+        .then(res => {
+            SetExpenses(res.data)
+            setLoading(false);
+        })
+        .catch(err => {
+            setLoading(false);
+        })
+
+    }
+    
+
+    // const Expenses = data;
 
     const [show, setShow] = useState(false);
 
@@ -65,7 +86,7 @@ const AllExpenses = ({ data }) => {
                 handleClose();
 
                 SetshowDeleteSpinner(false);
-
+                AllExpenses();
                 toast.warning('Expenses deleted successfully', { position: toast.POSITION.TOP_RIGHT });
 
                 router.push('/expenses');
@@ -292,30 +313,30 @@ export default AllExpenses
 
 
 
-export async function getServerSideProps(context) {
+// export async function getServerSideProps(context) {
 
-    const { data } = await GetExpenses();
+//     const { data } = await GetExpenses();
 
-    console.log('data from All Expenses == ', data);
-
-
-    let CookieObj = parseCookies(context.req);
+//     console.log('data from All Expenses == ', data);
 
 
+//     let CookieObj = parseCookies(context.req);
 
-    if (Object.keys(CookieObj).length == 0) {
-        return {
-            redirect: {
-                destination: '/login?callbackUrl=https://gym-app.ps-beta.com/expenses',
-                permanent: false
-            }
-        }
-    }
 
-    return {
-        props: {
-            data: data
-        }
-    }
 
-}
+//     if (Object.keys(CookieObj).length == 0) {
+//         return {
+//             redirect: {
+//                 destination: '/login?callbackUrl=https://gym-app.ps-beta.com/expenses',
+//                 permanent: false
+//             }
+//         }
+//     }
+
+//     return {
+//         props: {
+//             data: data
+//         }
+//     }
+
+// }

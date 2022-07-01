@@ -31,9 +31,29 @@ const AllFees = ({ data }) => {
 
     const [hasErrors, setHasErrors] = useState('')
 
-    // const [Fees, SetFees] = useState([])
+    const [Fees, SetFees] = useState([])
 
-    const Fees = data;
+    useEffect(() => {
+
+        AllFees();
+
+
+    }, [])
+
+
+    const AllFees = () => {
+        GetFees()
+            .then(res => {
+                SetFees(res.data);
+                setLoading(false);
+            })
+            .catch(err => {
+                setLoading(false);
+            })
+
+    }
+
+    // const Fees = data;
 
     const [show, setShow] = useState(false);
 
@@ -63,7 +83,7 @@ const AllFees = ({ data }) => {
                 handleClose();
 
                 SetshowDeleteSpinner(false);
-
+                AllFees();
                 toast.warning('Fee deleted successfully', { position: toast.POSITION.TOP_RIGHT });
 
                 router.push('/fees');
@@ -148,7 +168,11 @@ const AllFees = ({ data }) => {
 
                                             <th className='ps-4 w-150px'>Paid Fee</th>
 
-                                            <th className='ps-4 w-150px'>Due Fee</th>
+                                            <th className='ps-4 w-150px'>Trainer Due Fee</th>
+                                            <th className='ps-4 w-150px'>Membership Due Fee</th>
+                                            <th className='ps-4 w-150px'>Admission Due Fee</th>
+
+                                            <th className='ps-4 w-150px'>Total Due Fee</th>
 
                                             <th className='w-100px'>Actions</th>
 
@@ -166,7 +190,8 @@ const AllFees = ({ data }) => {
                                                     id: number, receiving_Date: string,
                                                     amount: number, trainerFee: number,
                                                     membershipFee: number, memberName: string,
-                                                    amount_Received: 0, dueFee: 0
+                                                    isAdmissionFee_Received : boolean,
+                                                    membership_Fee_Received: 0, trainer_Fee_Received: 0, dueFee: 0
                                                     // , createdOn: string, isActive : boolean
                                                 }, index) => (
                                                     <tr key={system.id}>
@@ -186,7 +211,15 @@ const AllFees = ({ data }) => {
 
                                                         <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.amount}</td>
 
-                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.amount_Received}</td>
+                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.trainer_Fee_Received + system.membership_Fee_Received}</td>
+
+
+                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.trainerFee - system.trainer_Fee_Received}</td>
+                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.membershipFee - system.membership_Fee_Received}</td>
+
+                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.isAdmissionFee_Received ? '0' : '2000'}</td>
+
+
                                                         <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.dueFee}</td>
 
 
@@ -303,24 +336,24 @@ export default AllFees
 
 
 
-export async function getServerSideProps(context) {
+// export async function getServerSideProps(context) {
 
 
 
 
 
-    const { data } = await GetFees();
+//     const { data } = await GetFees();
 
-    console.log('data from All Fees == ', data);
-
-
-    return {
-        props: {
-            data: data
-        }
-    }
+//     console.log('data from All Fees == ', data);
 
 
+//     return {
+//         props: {
+//             data: data
+//         }
+//     }
 
 
-}
+
+
+// }
