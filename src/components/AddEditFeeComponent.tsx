@@ -88,8 +88,8 @@ const AddEditFeeComponent = ({ data }) => {
             axios.get(`${API_URL}/api/Member/MemberFeeInfo/${selectedOption.value}`)
                 .then(res => {
 
-                     setMembership_Fee_Received(res.data.membershipFee);
-                     setTrainer_Fee_Received(res.data.trainerFee);
+                    setMembership_Fee_Received(res.data.membershipFee);
+                    setTrainer_Fee_Received(res.data.trainerFee);
 
 
 
@@ -169,7 +169,7 @@ const AddEditFeeComponent = ({ data }) => {
 
 
     const onsubmit = () => {
-        let values : any = {};
+        let values: any = {};
 
         values.isAdmissionFee_Received = IsAdmissionFee_Received;
         values.membership_Fee_Received = membership_Fee_Received;
@@ -241,10 +241,9 @@ const AddEditFeeComponent = ({ data }) => {
                                 }
                                 else {
                                     let obj2 =
-                                        // JSON.parse(
-                                        Obj.message
-                                    //  );
-
+                                        JSON.parse(
+                                            Obj.message
+                                        );
                                     toast.error(obj2.errorMessage, { position: toast.POSITION.BOTTOM_RIGHT });
 
                                     setHasErrors(obj2.errorMessage);
@@ -374,8 +373,8 @@ const AddEditFeeComponent = ({ data }) => {
                             step={1}
                             name='membership_Fee_Received'
                             value={membership_Fee_Received}
-                            onChange={(e) => {setMembership_Fee_Received(parseInt(e.target.value))}}
-                        
+                            onChange={(e) => { setMembership_Fee_Received(parseInt(e.target.value)) }}
+
                         />
                     </div>
 
@@ -386,13 +385,13 @@ const AddEditFeeComponent = ({ data }) => {
                             step={1}
                             name='trainer_Fee_Received'
                             value={trainer_Fee_Received}
-                            onChange={(e) => {setTrainer_Fee_Received(parseInt(e.target.value))}}
+                            onChange={(e) => { setTrainer_Fee_Received(parseInt(e.target.value)) }}
 
                         />
                     </div>
                 </div>
 
-                
+
                 <div className='p-2 m-2'>
                     <BSForm.Check
                         type="checkbox"
@@ -401,7 +400,7 @@ const AddEditFeeComponent = ({ data }) => {
                         //  id="requiredChk"
                         disabled={feeInfo.isAdmissionFee_Received}
                         checked={IsAdmissionFee_Received || feeInfo.isAdmissionFee_Received}
-                        onChange={(e) => {}}
+                        onChange={(e) => { }}
                         onClick={
                             (e: React.MouseEvent<HTMLInputElement>) => {
                                 if (e.currentTarget.checked) {
@@ -463,21 +462,21 @@ const AddEditFeeComponent = ({ data }) => {
 
 
                 {/* {feeInfo.amount !== 0 && */}
-                    <div className=' bg-light justify-content-center d-flex flex-wrap'>
+                <div className=' bg-light justify-content-center d-flex flex-wrap'>
 
-                        <span className='text-muted fw-bolder m-2'>Membership Date  :: </span><span className='text-muted  m-2'>{new Date(feeInfo.membership_Date).toLocaleDateString()}</span>
-                        <span className='text-muted fw-bolder m-2'>Contact :: </span><span className='text-muted m-2'>{feeInfo.contactNo ? feeInfo.contactNo : '--'}</span>
-                        <span className='text-muted fw-bolder m-2'>Due Fee :: </span><span className='text-muted m-2'>{feeInfo.dueFee ? feeInfo.dueFee : '--'}</span>
-                        <span className='text-muted fw-bolder m-2'>Trainer Fee :: </span><span className='text-muted m-2'>{feeInfo.trainerFee}</span>
-                        <span className='text-muted fw-bolder m-2'> Membership Fee :: </span><span className='text-muted m-2'>{feeInfo.membershipFee}</span>
-                        <span className='text-muted fw-bolder m-2'>Total Fee :: </span><span className='text-muted m-2'>{feeInfo.amount}</span>
+                    <span className='text-muted fw-bolder m-2'>Membership Date  :: </span><span className='text-muted  m-2'>{new Date(feeInfo.membership_Date).toLocaleDateString()}</span>
+                    <span className='text-muted fw-bolder m-2'>Contact :: </span><span className='text-muted m-2'>{feeInfo.contactNo ? feeInfo.contactNo : '--'}</span>
+                    <span className='text-muted fw-bolder m-2'>Due Fee :: </span><span className='text-muted m-2'>{feeInfo.dueFee ? feeInfo.dueFee : '--'}</span>
+                    <span className='text-muted fw-bolder m-2'>Trainer Fee :: </span><span className='text-muted m-2'>{feeInfo.trainerFee}</span>
+                    <span className='text-muted fw-bolder m-2'> Membership Fee :: </span><span className='text-muted m-2'>{feeInfo.membershipFee}</span>
+                    <span className='text-muted fw-bolder m-2'>Total Fee :: </span><span className='text-muted m-2'>{feeInfo.amount}</span>
 
-                        <span className='text-muted fw-bolder m-2'>Membership Fee Received :: </span><span className='text-muted m-2'>{feeInfo.membership_Fee_Received}</span>
-                        <span className='text-muted fw-bolder m-2'> trainer Fee Received :: </span><span className='text-muted m-2'>{feeInfo.trainer_Fee_Received}</span>
-                        <span className='text-muted fw-bolder m-2'>Is Admission Fee Received :: </span><span className='text-muted m-2'>{feeInfo.isAdmissionFee_Received ? 'Recieved' : 'Not Received'}</span>
+                    <span className='text-muted fw-bolder m-2'>Membership Fee Received :: </span><span className='text-muted m-2'>{feeInfo.membership_Fee_Received}</span>
+                    <span className='text-muted fw-bolder m-2'> trainer Fee Received :: </span><span className='text-muted m-2'>{feeInfo.trainer_Fee_Received}</span>
+                    <span className='text-muted fw-bolder m-2'>Is Admission Fee Received :: </span><span className='text-muted m-2'>{feeInfo.isAdmissionFee_Received ? 'Recieved' : 'Not Received'}</span>
 
 
-                    </div>
+                </div>
                 {/* } */}
 
 

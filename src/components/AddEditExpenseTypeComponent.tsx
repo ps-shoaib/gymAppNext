@@ -109,9 +109,9 @@ const AddEditExpenseTypeComponent = ({ data }) => {
                             }
                             else {
                                 let obj2 =
-                                    // JSON.parse(
+                                    JSON.parse(
                                     Obj.message
-                                //  );
+                                 );
 
                                 toast.error(obj2.errorMessage, { position: toast.POSITION.BOTTOM_RIGHT });
 
