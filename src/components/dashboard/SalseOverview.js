@@ -4,10 +4,10 @@ import dynamic from "next/dynamic";
 import BaseCard from "../baseCard/BaseCard";
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-const SalesOverview = ({ Dates, MembersLoginCountByDate, TotalMembersLoginInLastMonth }) => {
+const SalesOverview = ({ Dates, RevenueByDate }) => {
   const optionssalesoverview = {
     grid: {
-      show: false,
+      show: true,
       borderColor: "transparent",
       strokeDashArray: 2,
       padding: {
@@ -33,7 +33,7 @@ const SalesOverview = ({ Dates, MembersLoginCountByDate, TotalMembersLoginInLast
     chart: {
       offsetX: -15,
       toolbar: {
-        show: false,
+        show: true,
       },
       foreColor: "#adb0bb",
       fontFamily: "'DM Sans',sans-serif",
@@ -45,10 +45,10 @@ const SalesOverview = ({ Dates, MembersLoginCountByDate, TotalMembersLoginInLast
       enabled: true,
     },
     markers: {
-      size: 0,
+      size: 10,
     },
     legend: {
-      show: false,
+      show: true,
     },
     xaxis: {
       type: "Members Login",
@@ -76,8 +76,8 @@ const SalesOverview = ({ Dates, MembersLoginCountByDate, TotalMembersLoginInLast
     yaxis: {
       show: true,
       min: 0,
-      // max: 7,
-       tickAmount: MembersLoginCountByDate?.length > 0 ? Math.max(...MembersLoginCountByDate) : '10',
+      max: RevenueByDate?.length > 0 ? Math.max(...RevenueByDate) : 10000,
+      //  tickAmount: RevenueByDate?.length > 0 ? Math.max(...RevenueByDate) : '10',
       labels: {
         style: {
           cssClass: "grey--text lighten-2--text fill-color",
@@ -86,7 +86,7 @@ const SalesOverview = ({ Dates, MembersLoginCountByDate, TotalMembersLoginInLast
     },
     stroke: {
       show: true,
-      width: 40,
+      width: 50,
       lineCap: "butt",
       colors: ["transparent"],
     },
@@ -96,8 +96,8 @@ const SalesOverview = ({ Dates, MembersLoginCountByDate, TotalMembersLoginInLast
   };
   const seriessalesoverview = [
     {
-      name: "Member Login Count",
-      data: MembersLoginCountByDate?.length > 0 ?  MembersLoginCountByDate : []
+      name: "Revenue",
+      data: RevenueByDate?.length > 0 ?  RevenueByDate : []
       // [355, 390, 300, 350, 390, 180, 355, 390, 300, 350, 390, 180],
     },
     // {
@@ -107,8 +107,10 @@ const SalesOverview = ({ Dates, MembersLoginCountByDate, TotalMembersLoginInLast
 
   ];
   return (
-    <BaseCard title={`Members Login Overview`} description={`(Total ${TotalMembersLoginInLastMonth} Logins of Last Month)`}>
-      <span className="text-muted">Members Count</span>
+    <BaseCard title={`Revenue by Last 30 Dates`} 
+    // description={`(Total ${TotalMembersLoginInLastMonth} Logins of Last Month)`}
+    >
+      <span className="text-muted">Revenue</span>
 
       <Chart
         options={optionssalesoverview}
@@ -116,7 +118,7 @@ const SalesOverview = ({ Dates, MembersLoginCountByDate, TotalMembersLoginInLast
         type="bar"
         height="450px"
       />
-      <span className="d-flex justify-content-center text-muted"> Last Month </span>
+      <span className="d-flex justify-content-center text-muted"> Last 30 Days </span>
     </BaseCard>
   );
 };

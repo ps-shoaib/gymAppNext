@@ -19,8 +19,10 @@ export default function Index() {
   useEffect(() => {
     // Cookie.set("abc", "333333");
     //  Cookie.
+    console.log('API_URL In dashbaord cmpt', API_URL);
     axios.get(`${API_URL}/api/Dashboard`)
       .then(res => {
+        console.log('dashboard data == ', res.data);
         setDashboardDataObj(res.data);
       })
   }, [])
@@ -121,8 +123,7 @@ export default function Index() {
       <Grid item xs={12} lg={12}>
         <SalesOverview
           Dates={DashboardDataObj.lastThirtyDays}
-          MembersLoginCountByDate={DashboardDataObj.lastThirtyDaysMembersCount}
-          TotalMembersLoginInLastMonth={DashboardDataObj.totalMembersLoginInLastMonth}
+          RevenueByDate={DashboardDataObj.lastThirtyDaysRevenue}
         />
       </Grid>
       {/* ------------------------- row 1 ------------------------- */}
