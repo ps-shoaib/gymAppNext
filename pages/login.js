@@ -39,6 +39,8 @@ export default function Login() {
 
     const [loading, setLoading] = useState(false)
 
+    const [errorMsg, setErrorMsg] = useState('')
+
 
 
     const formik = useFormik({
@@ -62,6 +64,8 @@ export default function Login() {
 
             login(values.email, values.password)
                 .then(res => {
+                    setLoading(false);
+
                     console.log('response from login ', res.data);
 
                     Cookie.remove('UserObj');
@@ -77,7 +81,27 @@ export default function Login() {
 
                 })
                 .catch(err => {
-                    console.log('Error from login ', err);
+
+                    setLoading(false);
+
+                    let Obj = err.toJSON();
+
+                    console.log('Obj == ', Obj);
+
+
+
+                    if (Obj.message === 'Network Error') {
+                        setErrorMsg('API Server is down....')
+                    }
+                    else {
+                        let obj2 = JSON.parse(Obj.message);
+                        setErrorMsg(obj2.errorMessage);
+                    }
+
+                    console.log('message == ', errorMsg);
+
+
+
                 })
 
 
@@ -98,6 +122,8 @@ export default function Login() {
 
                 <div className='w-lg-500px bg-white rounded shadow-sm p-10 p-lg-15 mx-auto'>
 
+
+
                     <form
                         className='form w-100  p-5 card'
                         onSubmit={formik.handleSubmit}
@@ -115,6 +141,11 @@ export default function Login() {
         </div> */}
                         </div>
                         {/* begin::Heading */}
+                        {errorMsg &&
+                            <div className='mb-lg-15 alert alert-danger'>
+                                <div className='alert-text font-weight-bold'>{errorMsg}</div>
+                            </div>
+                        }
 
                         {formik.status ? (
                             <div className='mb-lg-15 alert alert-danger'>
@@ -279,3 +310,4 @@ Login.getLayout = function PageLayout(page) {
         </>
     )
 }
+

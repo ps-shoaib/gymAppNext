@@ -42,13 +42,39 @@ const AllFees = ({ data }) => {
 
 
     const AllFees = () => {
+        setLoading(true);
         GetFees()
             .then(res => {
                 SetFees(res.data);
                 setLoading(false);
             })
             .catch(err => {
-                setLoading(false);
+                setLoading(false)
+
+                
+
+                let Obj = err.toJSON();
+                console.log('1111111');
+                console.log('Obj', Obj);
+                if (Obj.message === 'Network Error') {
+
+                    toast.error('API Server is down....', { position: toast.POSITION.BOTTOM_RIGHT });
+
+                    setHasErrors('API Server is down....');
+                }
+                else {
+                    let obj2 =
+                        JSON.parse(
+                        Obj.message
+                      );
+
+                    toast.error(Obj.message, { position: toast.POSITION.BOTTOM_RIGHT });
+
+                    setHasErrors(obj2.errorMessage);
+
+                }
+
+
             })
 
     }
@@ -138,11 +164,11 @@ const AllFees = ({ data }) => {
                         <div className='card-body py-3'>
                             {/* begin::Table container */}
                             <div className='table-responsive'>
-                                {hasErrors ? (
+                                {hasErrors && 
                                     <div className='mb-lg-15 alert alert-danger'>
                                         <div className='alert-text font-weight-bold'>{hasErrors}</div>
                                     </div>
-                                ) : ''}
+                                }
 
                                 {/* {loading &&
                                     // <FullPageLoader />
@@ -190,7 +216,7 @@ const AllFees = ({ data }) => {
                                                     id: number, receiving_Date: string,
                                                     amount: number, trainerFee: number,
                                                     membershipFee: number, memberName: string,
-                                                    isAdmissionFee_Received : boolean,
+                                                    isAdmissionFee_Received: boolean,
                                                     membership_Fee_Received: 0, trainer_Fee_Received: 0, dueFee: 0
                                                     // , createdOn: string, isActive : boolean
                                                 }, index) => (
@@ -220,7 +246,7 @@ const AllFees = ({ data }) => {
                                                         <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.isAdmissionFee_Received ? '0' : '2000'}</td>
 
 
-                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.dueFee  + (system.isAdmissionFee_Received ? 0 : 2000)}</td>
+                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.dueFee + (system.isAdmissionFee_Received ? 0 : 2000)}</td>
 
 
                                                         {/* Fees/create-role/:id */}

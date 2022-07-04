@@ -16,14 +16,42 @@ import icon3 from '../assets/svgs/cash.svg'
 export default function Index() {
 
   const [DashboardDataObj, setDashboardDataObj] = useState({})
+
+
+  const [errorMsg, setErrorMsg] = useState('')
+
+
   useEffect(() => {
     // Cookie.set("abc", "333333");
     //  Cookie.
     console.log('API_URL In dashbaord cmpt', API_URL);
+
+
+
     axios.get(`${API_URL}/api/Dashboard`)
       .then(res => {
         console.log('dashboard data == ', res.data);
         setDashboardDataObj(res.data);
+      })
+      .catch(err => {
+
+        let Obj = err.toJSON();
+
+        console.log('Obj == ', Obj);
+
+
+
+        if (Obj.message === 'Network Error') {
+          setErrorMsg('API Server is down....')
+        }
+        else {
+          let obj2 = JSON.parse(Obj.message);
+          setErrorMsg(obj2.errorMessage);
+        }
+
+
+
+
       })
   }, [])
 
@@ -32,7 +60,14 @@ export default function Index() {
   return (
     <Grid container spacing={0}>
 
+
       <div className='row g-5 g-sm-4 m-2 w-100 '>
+
+        {errorMsg &&
+          <div className='mb-lg-15 alert alert-danger'>
+            <div className='alert-text font-weight-bold'>{errorMsg}</div>
+          </div>
+        }
 
 
         {/* public float DashboardDataObj.totalMembersLoginInLastMonth { get; set; }
