@@ -136,7 +136,7 @@ const DueFeeDetails = ({ data }) => {
                           Total  Due Fee
                         </td>
                         <td className='ps-4 w-100px text-dark  text-hover-primary border border-1'>
-                            {DueFeeDetails.dueFee}
+                            {DueFeeDetails.dueFee + (DueFeeDetails.isAdmissionFee_Received ? 0 : 2000)}
                         </td>
                     </tr>
 

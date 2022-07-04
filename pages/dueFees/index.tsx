@@ -147,7 +147,7 @@ const AllDueFees = ({ data }) => {
 
                                                         <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.trainer_Fee_Received + system.membership_Fee_Received}</td>
 
-                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.dueFee}</td>
+                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.dueFee + (system.isAdmissionFee_Received ? 0 : 2000)}</td>
 
 
                                                         {/* DueFees/create-role/:id */}
