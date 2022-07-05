@@ -18,6 +18,7 @@ import { Agent } from 'https'
 import icon1 from '../../assets/svgs/art005.svg'
 import icon2 from '../../assets/svgs/gen027.svg'
 import icon3 from '../../assets/svgs/arr075.svg'
+import icon4 from '../../assets/svgs/eyefill.svg'
 
 
 import Image from 'next/image'
@@ -51,7 +52,7 @@ const AllFees = ({ data }) => {
             .catch(err => {
                 setLoading(false)
 
-                
+
 
                 let Obj = err.toJSON();
                 console.log('1111111');
@@ -65,8 +66,8 @@ const AllFees = ({ data }) => {
                 else {
                     let obj2 =
                         JSON.parse(
-                        Obj.message
-                      );
+                            Obj.message
+                        );
 
                     toast.error(Obj.message, { position: toast.POSITION.BOTTOM_RIGHT });
 
@@ -164,7 +165,7 @@ const AllFees = ({ data }) => {
                         <div className='card-body py-3'>
                             {/* begin::Table container */}
                             <div className='table-responsive'>
-                                {hasErrors && 
+                                {hasErrors &&
                                     <div className='mb-lg-15 alert alert-danger'>
                                         <div className='alert-text font-weight-bold'>{hasErrors}</div>
                                     </div>
@@ -194,11 +195,11 @@ const AllFees = ({ data }) => {
 
                                             <th className='ps-4 w-150px'>Paid Fee</th>
 
-                                            <th className='ps-4 w-150px'>Trainer Due Fee</th>
+                                            {/* <th className='ps-4 w-150px'>Trainer Due Fee</th>
                                             <th className='ps-4 w-150px'>Membership Due Fee</th>
-                                            <th className='ps-4 w-150px'>Admission Due Fee</th>
+                                            <th className='ps-4 w-150px'>Admission Due Fee</th> */}
 
-                                            <th className='ps-4 w-150px'>Total Due Fee</th>
+                                            <th className='ps-4 w-150px'>Due Fee</th>
 
                                             <th className='w-100px'>Actions</th>
 
@@ -237,21 +238,52 @@ const AllFees = ({ data }) => {
 
                                                         <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.amount}</td>
 
-                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.trainer_Fee_Received + system.membership_Fee_Received}</td>
+                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>
+                                                            {system.trainer_Fee_Received + system.membership_Fee_Received + (system.isAdmissionFee_Received ? 2000 : 0)}
+                                                            <span className='text-muted' >
+                                                                {system.isAdmissionFee_Received ? '( + ADM Fee)' : ''}
+                                                            </span>
+                                                        </td>
 
 
-                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.trainerFee - system.trainer_Fee_Received}</td>
+                                                        {/* <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.trainerFee - system.trainer_Fee_Received}</td>
                                                         <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.membershipFee - system.membership_Fee_Received}</td>
 
-                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.isAdmissionFee_Received ? '0' : '2000'}</td>
+                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.isAdmissionFee_Received ? '0' : '2000'}</td> */}
 
 
-                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.dueFee + (system.isAdmissionFee_Received ? 0 : 2000)}</td>
+                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.dueFee}</td>
 
 
                                                         {/* Fees/create-role/:id */}
 
                                                         <td className='ps-4 w-100px'>
+
+                                                            <OverlayTrigger
+                                                                delay={{ hide: 450, show: 300 }}
+                                                                overlay={(props) => (
+                                                                    <Tooltip id={''} {...props}>
+                                                                        Due Fee Details
+                                                                    </Tooltip>
+                                                                )}
+                                                                placement="top"
+                                                            >
+
+                                                                <a
+                                                                    className='btn btn-icon btn-bg-warning mb-1 btn-active-color-warning btn-sm me-1'
+                                                                    onClick={() => router.push(`/fees/details/${system.id}`)}
+                                                                >
+                                                                    <Image
+                                                                        src={icon4}
+                                                                        alt={icon4}
+                                                                        width="23"
+                                                                        height="23"
+                                                                        className="roundedCircle"
+                                                                    />
+                                                                </a>
+
+                                                            </OverlayTrigger>
+
 
 
                                                             <OverlayTrigger
