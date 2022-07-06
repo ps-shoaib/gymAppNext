@@ -7,8 +7,8 @@ export interface DueFeeModel{
         trainer_Fee_Received: 0,
         membership_Fee_Received : 0,
         isAdmissionFee_Received : boolean,
-        dueFee: 0
-        ,
+        isAdmissionFeeAlready_Paid : boolean,
+        dueFee: 0,
         membership_Date : string,
         member_Address : string,
         member_PhoneNumber : string,
