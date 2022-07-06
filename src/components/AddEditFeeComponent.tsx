@@ -44,7 +44,7 @@ const AddEditFeeComponent = ({ data }) => {
 
     const [feeInfo, setFeeInfo] = useState({
         amount: 0, trainerFee: 0, membershipFee: 0, membership_Date: '', contactNo: '',
-        dueFee: 0, membership_Fee_Received: 0, trainer_Fee_Received: 0, isAdmissionFee_Received: false
+        dueFee: 0, membership_Fee_Received: 0, trainer_Fee_Received: 0, isAdmissionFee_Received: false,isAdmissionFeeAlready_Paid : false
     })
 
     const [Id, setId] = useState(0)
@@ -103,11 +103,12 @@ const AddEditFeeComponent = ({ data }) => {
 
 
                     setIsAdmissionFee_Received(res.data.isAdmissionFee_Received);
+
                 })
 
 
         } else {
-            setFeeInfo({ amount: 0, trainerFee: 0, membershipFee: 0, membership_Date: '', contactNo: '', dueFee: 0, membership_Fee_Received: 0, trainer_Fee_Received: 0, isAdmissionFee_Received: false });
+            setFeeInfo({ amount: 0, trainerFee: 0, membershipFee: 0, membership_Date: '', contactNo: '', dueFee: 0, membership_Fee_Received: 0, trainer_Fee_Received: 0, isAdmissionFee_Received: false, isAdmissionFeeAlready_Paid : false });
         }
         // console.log('e.target.value == ', e.target.value);
 
@@ -116,6 +117,7 @@ const AddEditFeeComponent = ({ data }) => {
         console.log('Selected Option Id == ', selectedOption.value);
     };
 
+    const [alreadyRecieved, setAlreadyRecieved] = useState(false)
 
     useEffect(() => {
         if (!isAddMode) {
@@ -127,9 +129,11 @@ const AddEditFeeComponent = ({ data }) => {
             setTrainer_Fee_Received(data.trainer_Fee_Received);
             setIsAdmissionFee_Received(data.isAdmissionFee_Received)
 
+            setAlreadyRecieved(data.isAdmissionFee_Received);
+
             setFeeInfo({
                 amount: data.amount, trainerFee: data.trainerFee, membershipFee: data.membershipFee, membership_Date: data.membership_Date, contactNo: data.contactNo, dueFee: data.dueFee,
-                membership_Fee_Received: data.membership_Fee_Received, trainer_Fee_Received: data.trainer_Fee_Received, isAdmissionFee_Received: data.isAdmissionFee_Received
+                membership_Fee_Received: data.membership_Fee_Received, trainer_Fee_Received: data.trainer_Fee_Received, isAdmissionFee_Received: data.isAdmissionFee_Received , isAdmissionFeeAlready_Paid : data.isAdmissionFeeAlready_Paid
             });
 
 
@@ -171,7 +175,17 @@ const AddEditFeeComponent = ({ data }) => {
     const onsubmit = () => {
         let values: any = {};
 
+        
         values.isAdmissionFee_Received = IsAdmissionFee_Received;
+
+        if(feeInfo.isAdmissionFee_Received==true){
+            values.isAdmissionFeeAlready_Paid = true;            
+        }
+        else{
+
+        }
+
+        values.isAdmissionFeeAlready_Paid = feeInfo.isAdmissionFeeAlready_Paid;
         values.membership_Fee_Received = membership_Fee_Received;
         values.trainer_Fee_Received = trainer_Fee_Received;
 
@@ -398,8 +412,8 @@ const AddEditFeeComponent = ({ data }) => {
                         label="Is Admission Fee Received ?"
                         name="isAdmissionFee_Received"
                         //  id="requiredChk"
-                        disabled={feeInfo.isAdmissionFee_Received}
-                        checked={IsAdmissionFee_Received || feeInfo.isAdmissionFee_Received}
+                        disabled={feeInfo.isAdmissionFee_Received || feeInfo.isAdmissionFeeAlready_Paid}
+                        checked={IsAdmissionFee_Received || feeInfo.isAdmissionFee_Received || feeInfo.isAdmissionFeeAlready_Paid}
                         onChange={(e) => { }}
                         onClick={
                             (e: React.MouseEvent<HTMLInputElement>) => {
@@ -473,7 +487,7 @@ const AddEditFeeComponent = ({ data }) => {
 
                     <span className='text-muted fw-bolder m-2'>Membership Fee Received :: </span><span className='text-muted m-2'>{feeInfo.membership_Fee_Received}</span>
                     <span className='text-muted fw-bolder m-2'> trainer Fee Received :: </span><span className='text-muted m-2'>{feeInfo.trainer_Fee_Received}</span>
-                    <span className='text-muted fw-bolder m-2'>Is Admission Fee Received :: </span><span className='text-muted m-2'>{feeInfo.isAdmissionFee_Received ? 'Recieved' : 'Not Received'}</span>
+                    <span className='text-muted fw-bolder m-2'>Is Admission Fee Received :: </span><span className='text-muted m-2'>{feeInfo.isAdmissionFee_Received || feeInfo.isAdmissionFeeAlready_Paid ? 'Recieved' : 'Not Received'}</span>
 
 
                 </div>

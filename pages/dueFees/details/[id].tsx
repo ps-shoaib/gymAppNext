@@ -10,6 +10,9 @@ import { GetDueFeeById } from 'src/Services/FeeService';
 
 const DueFeeDetails = ({ data }) => {
 
+    console.log('data == (((',data);
+    
+
     const DueFeeDetails: DueFeeModel = data;
 
 
@@ -142,7 +145,7 @@ const DueFeeDetails = ({ data }) => {
                             Admission Due Fee
                         </td>
                         <td className='ps-4 w-150px text-dark  text-hover-primary border border-1'>
-                            {DueFeeDetails.isAdmissionFee_Received ? '0' : '2000'}
+                            {DueFeeDetails.isAdmissionFee_Received || DueFeeDetails.isAdmissionFeeAlready_Paid ? '0' : '2000'}
                         </td>
                     </tr>
 

@@ -113,7 +113,7 @@ const FeeDetails = ({ data }) => {
                             Admission Due Fee
                         </td>
                         <td className='ps-4 w-150px text-dark  text-hover-primary border border-1'>
-                            {FeeDetails.isAdmissionFee_Received ? '0' : '2000'}
+                            {FeeDetails.isAdmissionFee_Received || FeeDetails.isAdmissionFeeAlready_Paid ? '0' : '2000'}
                         </td>
                     </tr>
 
