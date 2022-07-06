@@ -44,7 +44,7 @@ const AddEditFeeComponent = ({ data }) => {
 
     const [feeInfo, setFeeInfo] = useState({
         amount: 0, trainerFee: 0, membershipFee: 0, membership_Date: '', contactNo: '',
-        dueFee: 0, membership_Fee_Received: 0, trainer_Fee_Received: 0, isAdmissionFee_Received: false,isAdmissionFeeAlready_Paid : false
+        dueFee: 0, membership_Fee_Received: 0, trainer_Fee_Received: 0, isAdmissionFee_Received: false, isAdmissionFeeAlready_Paid: false
     })
 
     const [Id, setId] = useState(0)
@@ -108,7 +108,7 @@ const AddEditFeeComponent = ({ data }) => {
 
 
         } else {
-            setFeeInfo({ amount: 0, trainerFee: 0, membershipFee: 0, membership_Date: '', contactNo: '', dueFee: 0, membership_Fee_Received: 0, trainer_Fee_Received: 0, isAdmissionFee_Received: false, isAdmissionFeeAlready_Paid : false });
+            setFeeInfo({ amount: 0, trainerFee: 0, membershipFee: 0, membership_Date: '', contactNo: '', dueFee: 0, membership_Fee_Received: 0, trainer_Fee_Received: 0, isAdmissionFee_Received: false, isAdmissionFeeAlready_Paid: false });
         }
         // console.log('e.target.value == ', e.target.value);
 
@@ -133,7 +133,7 @@ const AddEditFeeComponent = ({ data }) => {
 
             setFeeInfo({
                 amount: data.amount, trainerFee: data.trainerFee, membershipFee: data.membershipFee, membership_Date: data.membership_Date, contactNo: data.contactNo, dueFee: data.dueFee,
-                membership_Fee_Received: data.membership_Fee_Received, trainer_Fee_Received: data.trainer_Fee_Received, isAdmissionFee_Received: data.isAdmissionFee_Received , isAdmissionFeeAlready_Paid : data.isAdmissionFeeAlready_Paid
+                membership_Fee_Received: data.membership_Fee_Received, trainer_Fee_Received: data.trainer_Fee_Received, isAdmissionFee_Received: data.isAdmissionFee_Received, isAdmissionFeeAlready_Paid: data.isAdmissionFeeAlready_Paid
             });
 
 
@@ -175,17 +175,13 @@ const AddEditFeeComponent = ({ data }) => {
     const onsubmit = () => {
         let values: any = {};
 
-        
         values.isAdmissionFee_Received = IsAdmissionFee_Received;
 
-        if(feeInfo.isAdmissionFee_Received==true){
-            values.isAdmissionFeeAlready_Paid = true;            
-        }
-        else{
-
+        if (values.isAdmissionFee_Received == true || feeInfo.isAdmissionFeeAlready_Paid == true) {
+            values.isAdmissionFeeAlready_Paid = true;
         }
 
-        values.isAdmissionFeeAlready_Paid = feeInfo.isAdmissionFeeAlready_Paid;
+        // values.isAdmissionFeeAlready_Paid = feeInfo.isAdmissionFeeAlready_Paid;
         values.membership_Fee_Received = membership_Fee_Received;
         values.trainer_Fee_Received = trainer_Fee_Received;
 
@@ -363,21 +359,65 @@ const AddEditFeeComponent = ({ data }) => {
                 ) : ''}
 
 
-                <div className='m-3'>
-                    <h6>Select Member </h6>
-                    <Select
-                        value={selectedOption}
-                        onChange={handleChange}
-                        options={options}
-                        isDisabled={!isAddMode}
-                    />
-                    {showMemberErrorMsg ? (
-                        <div className='text-danger'>{'Required'}</div>
-                    ) : ''}
 
+                <div className='d-flex'>
+
+                    <div className='m-3 w-100'>
+                        <h6>Select Member </h6>
+                        <Select
+                            value={selectedOption}
+                            onChange={handleChange}
+                            options={options}
+                            isDisabled={!isAddMode}
+                        />
+                        {showMemberErrorMsg ? (
+                            <div className='text-danger'>{'Required'}</div>
+                        ) : ''}
+                    </div>
+
+                    <div className='m-3 w-100'>
+
+
+                        <h6>Receiving Date </h6>
+                        <div className='d-flex'>
+                            <DateView
+                                className="form-control"
+                                // name='startDate'
+                                id='dt1'
+                                selected={startDate}
+                                onChange={(date) => setStartDate(date)}
+                                selectsStart
+                                startDate={startDate}
+                            // endDate={endDate}
+                            // dateFormat="MM/yyyy"
+                            // showMonthYearPicker
+
+
+                            />
+
+                            <label htmlFor='dt1' className='m-2'>
+                                <span className=""
+                                    style={
+                                        { 'position': 'relative', 'right': '37px' }
+                                    }
+
+                                >
+                                    <Image
+                                        src={icon3}
+                                        alt={icon3}
+                                        width="23"
+                                        height="23"
+                                    // className="roundedCircle"
+                                    />
+
+
+                                </span>
+                            </label>
+                        </div>
+
+                    </div>
 
                 </div>
-
                 <div className=' d-flex'>
                     <div className='m-3 w-100'>
                         <label htmlFor={'membership_Fee_Received'} className="h6">{'membership Fee Received'}</label>
@@ -429,58 +469,99 @@ const AddEditFeeComponent = ({ data }) => {
                 </div>
 
 
-                <div className='m-3'>
 
 
-                    <h6>Receiving Date </h6>
-                    <div className='d-flex'>
-                        <DateView
-                            className="form-control"
-                            // name='startDate'
-                            id='dt1'
-                            selected={startDate}
-                            onChange={(date) => setStartDate(date)}
-                            selectsStart
-                            startDate={startDate}
-                        // endDate={endDate}
-                        // dateFormat="MM/yyyy"
-                        // showMonthYearPicker
+                <div className='m-5'>
+                    <table className='table align-middle gs-0 gy-4  border border-1'>
+                        {/* begin::Table head */}
+                        <thead>
+                            <tr className='fs-4 text-center  fw-bolder bg-light' >
+                                {/* <th className='ps-4 min-w-300px rounded-start'>Agent</th> */}
+                                <th className='ps-4' colSpan={6}>Info of Member</th>
 
 
-                        />
+                            </tr>
+                        </thead>
 
-                        <label htmlFor='dt1' className='m-2'>
-                            <span className=""
-                                style={
-                                    { 'position': 'relative', 'right': '37px' }
-                                }
+                        <tbody>
 
-                            >
-                                <Image
-                                    src={icon3}
-                                    alt={icon3}
-                                    width="23"
-                                    height="23"
-                                // className="roundedCircle"
-                                />
+                            <tr className={'border border-2'}>
+                                <td className='ps-4 w-100px fw-bolder text-dark text-hover-primary border border-1'>
+                                    Membership Date
+                                </td>
+                                <td className='ps-4 w-100px text-dark  text-hover-primary border border-2'>
+                                    {new Date(feeInfo.membership_Date).toLocaleDateString()}
+                                </td>
+                                <td className='ps-4 w-100px fw-bolder text-dark text-hover-primary border border-1'>
+                                    Contact
+                                </td>
+                                <td className='ps-4 w-100px text-dark  text-hover-primary border border-2'>
+                                    {feeInfo.contactNo ? feeInfo.contactNo : '--'}
+                                </td>
+                                <td className='ps-4 w-100px fw-bolder text-dark text-hover-primary border border-1'>
+                                    Due Fee
+                                </td>
+                                <td className='ps-4 w-100px text-dark  text-hover-primary  border border-2'>
+                                    {feeInfo.dueFee ? feeInfo.dueFee : '--'}
+                                </td>
+                            </tr>
+
+                            <tr className={'border border-2'}>
+                                <td className='ps-4 w-100px fw-bolder text-dark text-hover-primary border border-1'>
+                                    Trainer Fee
+                                </td>
+                                <td className='ps-4 w-100px text-dark  text-hover-primary border border-2'>
+                                    {feeInfo.trainerFee}
+                                </td>
+                                <td className='ps-4 w-100px fw-bolder text-dark text-hover-primary border border-1'>
+                                    Membership Fee
+                                </td>
+                                <td className='ps-4 w-100px text-dark  text-hover-primary border border-2'>
+                                    {feeInfo.membershipFee}
+                                </td>
+
+                                <td className='ps-4 w-100px fw-bolder text-dark text-hover-primary border border-1'>
+                                    Total Fee
+                                </td>
+                                <td className='ps-4 w-100px text-dark  text-hover-primary  border border-2'>
+                                    {feeInfo.amount}
+                                </td>
+                            </tr>
+
+                            <tr className={'border border-2'}>
+                                <td className='ps-4 w-100px fw-bolder text-dark text-hover-primary border border-1'>
+                                    Received Membership Fee
+                                </td>
+                                <td className='ps-4 w-100px text-dark  text-hover-primary border border-2'>
+                                    {feeInfo.membership_Fee_Received}
+                                </td>
+                                <td className='ps-4 w-100px fw-bolder text-dark text-hover-primary border border-1'>
+                                    Received trainer Fee
+                                </td>
+                                <td className='ps-4 w-100px text-dark  text-hover-primary border border-2'>
+                                    {feeInfo.trainer_Fee_Received}
+                                </td>
+                                <td className='ps-4 w-100px fw-bolder text-dark text-hover-primary border border-1'>
+                                    Is Admission Fee Received?
+                                </td>
+                                <td className='ps-4 w-100px text-dark  text-hover-primary  border border-2'>
+                                    {feeInfo.isAdmissionFee_Received || feeInfo.isAdmissionFeeAlready_Paid ? 'Recieved' : 'Not'}
+                                </td>
+                            </tr>
 
 
-                            </span>
-                        </label>
-                    </div>
+
+                        </tbody>
+                    </table>
 
                 </div>
-
-
-
-
-
                 {/* {feeInfo.amount !== 0 && */}
-                <div className=' bg-light justify-content-center d-flex flex-wrap'>
+                {/* <div className=' bg-light justify-content-center d-flex flex-wrap'>
 
                     <span className='text-muted fw-bolder m-2'>Membership Date  :: </span><span className='text-muted  m-2'>{new Date(feeInfo.membership_Date).toLocaleDateString()}</span>
                     <span className='text-muted fw-bolder m-2'>Contact :: </span><span className='text-muted m-2'>{feeInfo.contactNo ? feeInfo.contactNo : '--'}</span>
                     <span className='text-muted fw-bolder m-2'>Due Fee :: </span><span className='text-muted m-2'>{feeInfo.dueFee ? feeInfo.dueFee : '--'}</span>
+
                     <span className='text-muted fw-bolder m-2'>Trainer Fee :: </span><span className='text-muted m-2'>{feeInfo.trainerFee}</span>
                     <span className='text-muted fw-bolder m-2'> Membership Fee :: </span><span className='text-muted m-2'>{feeInfo.membershipFee}</span>
                     <span className='text-muted fw-bolder m-2'>Total Fee :: </span><span className='text-muted m-2'>{feeInfo.amount}</span>
@@ -490,7 +571,7 @@ const AddEditFeeComponent = ({ data }) => {
                     <span className='text-muted fw-bolder m-2'>Is Admission Fee Received :: </span><span className='text-muted m-2'>{feeInfo.isAdmissionFee_Received || feeInfo.isAdmissionFeeAlready_Paid ? 'Recieved' : 'Not Received'}</span>
 
 
-                </div>
+                </div> */}
                 {/* } */}
 
 
