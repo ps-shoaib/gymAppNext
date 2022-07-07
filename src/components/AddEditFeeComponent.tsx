@@ -75,6 +75,9 @@ const AddEditFeeComponent = ({ data }) => {
 
     const isAddMode = data == '';
 
+    console.log('isAddMode == ', isAddMode);
+    
+
     const handleChange = (selectedOption) => {
 
         if (showMemberErrorMsg) {
@@ -177,8 +180,11 @@ const AddEditFeeComponent = ({ data }) => {
 
         values.isAdmissionFee_Received = IsAdmissionFee_Received;
 
-        if (values.isAdmissionFee_Received == true || feeInfo.isAdmissionFeeAlready_Paid == true) {
-            values.isAdmissionFeeAlready_Paid = true;
+        if (isAddMode) {
+
+            if (feeInfo.isAdmissionFee_Received == true || feeInfo.isAdmissionFeeAlready_Paid == true) {
+                values.isAdmissionFeeAlready_Paid = true;
+            }
         }
 
         // values.isAdmissionFeeAlready_Paid = feeInfo.isAdmissionFeeAlready_Paid;
