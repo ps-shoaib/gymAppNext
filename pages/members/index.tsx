@@ -23,6 +23,8 @@ import icon6 from '../../assets/svgs/arrowLeft.svg'
 
 import icon7 from '../../assets/svgs/calendar.svg'
 import icon8 from '../../assets/svgs/file.svg'
+import icon9 from '../../assets/svgs/x-square-fill.svg'
+import icon10 from '../../assets/svgs/check_icon.svg'
 
 import { GetTrainers } from 'src/Services/MemberService'
 
@@ -519,7 +521,19 @@ const AllMembers = ({ data }) => {
                                                         {/* <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.trainerName ? system.trainerName : 'No Trainer'}</td>
                                                         <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.trainingFee ? system.trainingFee : '--'}</td> */}
 
-                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.activeStatus ? 'Active' : 'Inactive'}</td>
+                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.activeStatus ? <Image
+                                                            src={icon10}
+                                                            alt={icon10}
+                                                            width="23"
+                                                            height="23"
+                                                        className="roundedCircle"
+                                                        /> : <Image
+                                                            src={icon9}
+                                                            alt={icon9}
+                                                            width="23"
+                                                            height="23"
+                                                        className="roundedCircle"
+                                                        />}</td>
 
 
                                                         <td className='ps-4 w-100px'>
@@ -902,7 +916,7 @@ const AllMembers = ({ data }) => {
                                         </Button>
                                         <Button variant="danger" onClick={handleUpdateStatus}>
                                             <div className='d-flex'>
-                                                Update Status
+                                                Toggle Status
                                                 {showDeactivateSpinner && (
                                                     <span className='indicator-progress' style={{ display: 'block' }}>
                                                         <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
