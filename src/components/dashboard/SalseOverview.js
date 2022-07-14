@@ -118,7 +118,7 @@ const SalesOverview = ({ Dates, RevenueByDate }) => {
         type="bar"
         height="450px"
       />
-      <span className="d-flex justify-content-center text-muted"> Last 30 Days </span>
+      <span className="d-flex justify-content-center text-muted"> Last 30 Dates </span>
     </BaseCard>
   );
 };
