@@ -81,7 +81,7 @@ export default function Login() {
 
                     setTimeout(() => {
                         location.reload();
-                    }, 200);
+                    }, 800);
 
 
 
