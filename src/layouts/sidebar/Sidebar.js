@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import NextLink from "next/link";
 import PropTypes from "prop-types";
 import {
@@ -20,6 +20,8 @@ import Menuitems from "./MenuItems";
 import Buynow from "./Buynow";
 import { useRouter } from "next/router";
 
+import Cookie from 'js-cookie'
+
 const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
   const [open, setOpen] = React.useState(true);
 
@@ -32,6 +34,29 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
       setOpen(index);
     }
   };
+
+
+  var UserObj = Cookie.get("UserObj");
+
+  useEffect(() => {
+
+    if (UserObj !== undefined) {
+      
+      if (JSON.parse(UserObj).role == 'Admin') {
+
+        Menuitems.splice(1, 0,
+          {
+            title: "Users",
+            icon: "user",
+            href: '/users'
+          }
+        )
+      }
+    }
+
+  }, [])
+
+
   let curl = useRouter();
   const location = curl.pathname;
 

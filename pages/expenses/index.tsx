@@ -21,7 +21,7 @@ import icon3 from '../../assets/svgs/arr075.svg'
 import Image from 'next/image'
 
 import { parseCookies } from 'src/parseCookies'
-
+import Cookie from 'js-cookie'
 
 const AllExpenses = ({ data }) => {
 
@@ -37,44 +37,58 @@ const AllExpenses = ({ data }) => {
     // const { data } = await GetExpenses();
 
     useEffect(() => {
-        
-        AllExpenses();
-    
+
+        var UserObj = Cookie.get("UserObj");
+
+
+        console.log('UserObj == ', UserObj);
+
+
+        if (UserObj == undefined) {
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/expenses');
+        } else {
+
+
+
+
+            AllExpenses();
+        }
+
     }, [])
 
 
     const AllExpenses = () => {
         GetExpenses()
-        .then(res => {
-            SetExpenses(res.data)
-            setLoading(false);
-        })
-        .catch(err => {
-            setLoading(false);
-            let Obj = err.toJSON();
-            console.log('1111111');
-            console.log('Obj', Obj);
-            if (Obj.message === 'Network Error') {
+            .then(res => {
+                SetExpenses(res.data)
+                setLoading(false);
+            })
+            .catch(err => {
+                setLoading(false);
+                let Obj = err.toJSON();
+                console.log('1111111');
+                console.log('Obj', Obj);
+                if (Obj.message === 'Network Error') {
 
-                toast.error('API Server is down....', { position: toast.POSITION.BOTTOM_RIGHT });
+                    toast.error('API Server is down....', { position: toast.POSITION.BOTTOM_RIGHT });
 
-                setHasErrors('API Server is down....');
-            }
-            else {
-                let obj2 =
-                    JSON.parse(
-                    Obj.message
-                  );
+                    setHasErrors('API Server is down....');
+                }
+                else {
+                    let obj2 =
+                        JSON.parse(
+                            Obj.message
+                        );
 
-                toast.error(Obj.message, { position: toast.POSITION.BOTTOM_RIGHT });
+                    toast.error(Obj.message, { position: toast.POSITION.BOTTOM_RIGHT });
 
-                setHasErrors(obj2.errorMessage);
+                    setHasErrors(obj2.errorMessage);
 
-            }
-        })
+                }
+            })
 
     }
-    
+
 
     // const Expenses = data;
 

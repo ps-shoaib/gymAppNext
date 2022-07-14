@@ -16,6 +16,7 @@ import icon1 from '../../../assets/svgs/art005.svg'
 import icon2 from '../../../assets/svgs/gen027.svg'
 import icon3 from '../../../assets/svgs/arr075.svg'
 
+import Cookie from 'js-cookie'
 import { parseCookies } from 'src/parseCookies'
 
 const AllCategories = ({ data }) => {
@@ -34,36 +35,45 @@ const AllCategories = ({ data }) => {
     //     const { data } = await GetExpenseTypes();
     useEffect(() => {
 
-        GetExpenseTypes()
-            .then(res => {
-                SetCategories(res.data);
-                setLoading(false)
-            })
-            .catch(err => {
-                setLoading(false);
+        var UserObj = Cookie.get("UserObj");
 
-                let Obj = err.toJSON();
-                console.log('1111111');
-                console.log('Obj', Obj);
-                if (Obj.message === 'Network Error') {
 
-                    toast.error('API Server is down....', { position: toast.POSITION.BOTTOM_RIGHT });
+        console.log('UserObj == ', UserObj);
 
-                    setHasErrors('API Server is down....');
-                }
-                else {
-                    let obj2 =
-                        JSON.parse(
-                        Obj.message
-                      );
 
-                    toast.error(Obj.message, { position: toast.POSITION.BOTTOM_RIGHT });
+        if (UserObj == undefined) {
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/expenses/type');
+        } else {
+            GetExpenseTypes()
+                .then(res => {
+                    SetCategories(res.data);
+                    setLoading(false)
+                })
+                .catch(err => {
+                    setLoading(false);
 
-                    setHasErrors(obj2.errorMessage);
+                    let Obj = err.toJSON();
+                    console.log('1111111');
+                    console.log('Obj', Obj);
+                    if (Obj.message === 'Network Error') {
 
-                }
-            })
+                        toast.error('API Server is down....', { position: toast.POSITION.BOTTOM_RIGHT });
 
+                        setHasErrors('API Server is down....');
+                    }
+                    else {
+                        let obj2 =
+                            JSON.parse(
+                                Obj.message
+                            );
+
+                        toast.error(Obj.message, { position: toast.POSITION.BOTTOM_RIGHT });
+
+                        setHasErrors(obj2.errorMessage);
+
+                    }
+                })
+        }
 
     }, [])
 

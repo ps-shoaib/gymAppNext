@@ -15,7 +15,7 @@ import icon2 from '../../assets/svgs/gen027.svg'
 import icon3 from '../../assets/svgs/arr075.svg'
 import { parseCookies } from '../../src/parseCookies'
 
-
+import Cookie from 'js-cookie'
 
 const AllPlans = ({ data }) => {
 
@@ -28,8 +28,21 @@ const AllPlans = ({ data }) => {
     const [Plans, SetPlans] = useState([])
     // const { data } = await GetPlans();
     useEffect(() => {
+        
 
-        GetAllPlans();
+        var UserObj = Cookie.get("UserObj");
+
+
+        console.log('UserObj == ', UserObj);
+
+
+        if (UserObj == undefined) {
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/plan');
+        } else {
+
+
+            GetAllPlans();
+        }
 
     }, [])
 
@@ -53,8 +66,8 @@ const AllPlans = ({ data }) => {
                 else {
                     let obj2 =
                         JSON.parse(
-                        Obj.message
-                      );
+                            Obj.message
+                        );
 
                     toast.error(Obj.message, { position: toast.POSITION.BOTTOM_RIGHT });
 

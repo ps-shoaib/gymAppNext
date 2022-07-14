@@ -24,6 +24,11 @@ import icon4 from '../../assets/svgs/eyefill.svg'
 import Image from 'next/image'
 import { DeleteFee, GetFees } from 'src/Services/FeeService'
 
+import Cookie from 'js-cookie'
+
+
+
+
 const AllFees = ({ data }) => {
 
     const router = useRouter();
@@ -36,8 +41,17 @@ const AllFees = ({ data }) => {
 
     useEffect(() => {
 
-        AllFees();
+        var UserObj = Cookie.get("UserObj");
 
+
+        console.log('UserObj == ', UserObj);
+
+
+        if (UserObj == undefined) {
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/fees');
+        } else {
+            AllFees();
+        }
 
     }, [])
 

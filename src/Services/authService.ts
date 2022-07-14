@@ -1,8 +1,8 @@
 import axios from "axios"
 
-export const API_URL = process.env.API_URL  || 'https://gym-api.ps-beta.com'
+// export const API_URL = process.env.API_URL  || 'https://gym-api.ps-beta.com'
 
-// export const API_URL = process.env.API_URL  || 'https://localhost:44303'
+export const API_URL = process.env.API_URL  || 'https://localhost:44303'
 
 console.log('api url == ', API_URL);
 

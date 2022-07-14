@@ -16,6 +16,8 @@ import Image from 'next/image'
 import { GetAllDueFees } from 'src/Services/FeeService'
 import { DueFeeModel } from 'src/models/DueFeesViewModels/DueFeesModel'
 
+import Cookie from 'js-cookie'
+
 const AllDueFees = ({ data }) => {
 
     const router = useRouter();
@@ -60,7 +62,19 @@ const AllDueFees = ({ data }) => {
     const [DueFees, SetFees] = useState<DueFeeModel[] | null>([])
     // const { data } = await GetAllDueFees();
     useEffect(() => {
+
+        var UserObj = Cookie.get("UserObj");
+
+
+        console.log('UserObj == ', UserObj);
+
+
+        if (UserObj == undefined) {
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/dueFees');
+        } else {
+        
         GetDueFees();
+        }
     }, [])
 
 

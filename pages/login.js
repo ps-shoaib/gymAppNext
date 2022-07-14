@@ -70,12 +70,20 @@ export default function Login() {
 
                     Cookie.remove('UserObj');
                     Cookie.set("UserObj", JSON.stringify(res.data), { expires: inMinutes });
+                    
                     if (callbackUrl) {
                         router.push(callbackUrl)
+                        
 
                     } else {
                         router.push('/')
                     }
+
+                    setTimeout(() => {
+                        location.reload();
+                    }, 200);
+
+
 
 
 

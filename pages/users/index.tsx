@@ -1,28 +1,24 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, FormEvent } from 'react'
 import axios from 'axios'
-
-import { Card, Button, Table, Modal, Spinner, Tooltip, OverlayTrigger } from 'react-bootstrap'
-
+import { Card, Button, Table, Modal, Spinner, Tooltip, OverlayTrigger, Form } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
-import { GetEmployeeCategories, DeleteEmployeeCategory } from '../../../src/Services/EmployeeCategoryService'
-// import FullPageLoader from '../../FullPageLoader'
+import { ErrorResponseModel } from 'src/models/errorViewModels/ErrorResponseModel'
+import { ErrorModel } from 'src/models/errorViewModels/ErrorModel'
 import { useRouter } from 'next/router'
+import { DeleteUser, GetAllUsers } from 'src/Services/userService'
+import { API_URL } from 'src/Services/authService'
 
-
-import Image from 'next/image'
-import icon1 from '../../../assets/svgs/art005.svg'
-import icon2 from '../../../assets/svgs/gen027.svg'
-import icon3 from '../../../assets/svgs/arr075.svg'
-import { parseCookies } from 'src/parseCookies'
+import icon1 from '../../assets/svgs/art005.svg'
+import icon2 from '../../assets/svgs/gen027.svg'
+import icon3 from '../../assets/svgs/arr075.svg'
+import icon4 from '../../assets/svgs/eyefill.svg'
 import Cookie from 'js-cookie'
 
-
-const AllCategories = ({ data }) => {
-
+import Image from 'next/image'
 
 
+const AllUsers = () => {
 
 
     const router = useRouter();
@@ -31,65 +27,27 @@ const AllCategories = ({ data }) => {
 
     const [hasErrors, setHasErrors] = useState('')
 
-    const [Categories, SetCategories] = useState([])
-
-
-    useEffect(() => {
-
-        var UserObj = Cookie.get("UserObj");
-
-
-        console.log('UserObj == ', UserObj);
-
-
-        if (UserObj == undefined) {
-            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/employees/categories');
-        } else {
-
-            GetEmployeeCategories()
-                .then(res => {
-                    SetCategories(res.data);
-                    setLoading(false);
-                })
-                .catch(err => {
-                    setLoading(false);
-
-                    let Obj = err.toJSON();
-                    console.log('1111111');
-                    console.log('Obj', Obj);
-                    if (Obj.message === 'Network Error') {
-
-                        toast.error('API Server is down....', { position: toast.POSITION.BOTTOM_RIGHT });
-
-                        setHasErrors('API Server is down....');
-                    }
-                    else {
-                        let obj2 =
-                            JSON.parse(
-                                Obj.message
-                            );
-
-                        toast.error(Obj.message, { position: toast.POSITION.BOTTOM_RIGHT });
-
-                        setHasErrors(obj2.errorMessage);
-
-                    }
-                })
-        }
-
-    }, [])
-
-
-
-    // const Categories = data;
+    const [users, SetUsers] = useState([{
+        id: '',
+        userName: '',
+        email: '',
+        // phoneNumber: '',
+        // gender: '',
+        // address: '',
+        role: '',
+        // isVerified: false,
+        // isHost: false
+    }])
 
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
 
-    const [IdtoBDeleted, setIdtoBDeleted] = useState(0);
+    const [IdtoBDeleted, setIdtoBDeleted] = useState('');
 
-    const handleShow = (id: number) => {
+    const [showDeleteSpinner, SetshowDeleteSpinner] = useState(false);
+
+    const handleShow = (id: string) => {
         console.log('id in handleShow---', id);
 
         setShow(true);
@@ -97,35 +55,104 @@ const AllCategories = ({ data }) => {
 
     };
 
-    const [showDeleteSpinner, SetshowDeleteSpinner] = useState(false);
+
+
+    const [search, setSearch] = React.useState('');
+
+
+
+
+
+    const data = {
+        nodes: search.length === 0 || search === 'select'
+            ? users
+            : users.filter(item =>
+                item.userName?.toLocaleLowerCase().includes(search) ||
+                //  item.phoneNumber?.includes(search) ||
+                item.email?.toLocaleLowerCase().includes(search)  
+                // || item.gender?.includes(search) ||
+                // item.address?.toLocaleLowerCase().includes(search)
+            )
+
+    }
+
+
 
     function handleDelete() {
 
         console.log('id in handle Delete---', IdtoBDeleted);
         SetshowDeleteSpinner(true);
 
-
-        DeleteEmployeeCategory(IdtoBDeleted)
+        DeleteUser(IdtoBDeleted)
             .then(res => {
-                console.log('res from DeleteCategories----', res);
+                SetshowDeleteSpinner(false);
+                handleClose();
+
+                toast.warning('User deleted successfully', { position: toast.POSITION.TOP_RIGHT });
+
+                GetUsers();
+            })
+            .catch(err => {
+
                 handleClose();
 
                 SetshowDeleteSpinner(false);
 
-                toast.warning('Employee Category deleted successfully', { position: toast.POSITION.TOP_RIGHT });
-
-                router.push('/employees/categories');
+                toast.error('Error in Deleting User', { position: toast.POSITION.TOP_RIGHT });
 
             })
-            .catch(err => {
-                console.log('err from DeleteCategories', err);
-                SetshowDeleteSpinner(false);
-                toast.error('Error in Deleting Employee Type, try again after Deleting this category from Employee and that Employee\'s data from Other Modules', { position: toast.POSITION.TOP_RIGHT });
 
-            })
     };
 
+    const GetUsers = () => {
 
+        setLoading(true);
+        GetAllUsers()
+            .then(res => {
+                console.log('res from AllUsers----', res);
+                SetUsers(res.data)
+
+                setLoading(false);
+            })
+            .catch(err => {
+                setLoading(false);
+
+                console.log('err from GetAllTypesNames', err);
+
+                let Obj: ErrorResponseModel = err.toJSON();
+
+                console.log(Obj.message);
+
+
+                if (Obj.message === 'Network Error') {
+                    setHasErrors('API Server is down....')
+                }
+                else {
+                    let obj2: ErrorModel = JSON.parse(Obj.message);
+                    setHasErrors(obj2.errorMessage);
+                }
+
+            })
+    }
+
+
+
+    useEffect(
+        () => {
+            var UserObj = Cookie.get("UserObj");
+
+
+            console.log('UserObj == ', UserObj);
+    
+    
+            if (UserObj == undefined) {
+                router.push('/login?callbackUrl=https://gym-app.ps-beta.com/users');
+            } else {
+    
+            GetUsers()
+            }
+        }, []
+    )
 
 
 
@@ -140,16 +167,17 @@ const AllCategories = ({ data }) => {
 
 
                         {/* begin::Header */}
+
+
                         <div className='card-header border-0 pt-5 d-flex justify-content-between'>
                             <h3 className='card-title align-items-start flex-column'>
-                                <span className='card-label  fs-3 mb-1'>All Categories of Employees</span>
+                                <span className='card-label  fs-3 mb-1'>All Users</span>
                                 {/* <span className='text-muted mt-1 fw-bold fs-7'>All Offices in our PlatForm</span> */}
                             </h3>
                             <div className='card-toolbar'>
                                 <a className='btn btn-sm btn-primary m-1 p-2 d-flex'
-                                    onClick={() => router.push('/employees/categories/create')}
+                                    onClick={() => router.push('/users/create')}
                                 >
-
                                     <Image
                                         src={icon3}
                                         alt={icon3}
@@ -174,18 +202,38 @@ const AllCategories = ({ data }) => {
                                 ) : ''}
 
                                 {/* {loading &&
+                                    // <div className='d-flex justify-content-center'>
+                                    //     <Spinner animation="border" role="status" className='m-5'>
+                                    //         <span className="visually-hidden">Loading...</span>
+                                    //     </Spinner>
+                                    // </div>
                                     // <FullPageLoader />
                                 } */}
                                 {/* begin::Table */}
+                                <div className=' m-1 p-1 d-flex '>
+                                    {/* <div className='mt-5 pt-5'> */}
+
+                                    <input
+                                        type='text'
+                                        onChange={(event) => setSearch(event.target.value)}
+                                        className='form-control border-2 rounded  bg-light'
+                                        placeholder='Search...'
+                                        style={{ 'marginRight': '20px' }}
+                                    />
+                                    {/* </div> */}
+
+                                </div>
+
+
 
                                 <table className='table align-middle gs-0 gy-4'>
                                     {/* begin::Table head */}
                                     <thead>
-                                        <tr className=' w-250px text-muted bg-light'>
+                                        <tr className='fw-bolder w-250px text-muted bg-light'>
                                             {/* <th className='ps-4 min-w-300px rounded-start'>Agent</th> */}
-                                            <th className='ps-4 w-150px'>#</th>
+                                            <th className='ps-4 w-200px'>Name</th>
 
-                                            <th className='ps-4 w-150px'>Name</th>
+                                            <th className='ps-4 w-200px'>Email</th>
 
 
                                             <th className='w-100px'>Actions</th>
@@ -199,40 +247,42 @@ const AllCategories = ({ data }) => {
 
                                         {/* (SetSpacetypes : {id : number, name : string}[]) => ( */}
                                         {
-                                            Categories.map(
-                                                (system: {
-                                                    id: number, name: string
-                                                    // , createdOn: string, isActive : boolean
-                                                }, index) => (
+                                            data.nodes!.map(
+                                                (system) => (
                                                     <tr key={system.id}>
 
+                                                        <td className='ps-4 w-200px text-dark  text-hover-primary'>
+                                                            <>
+                                                                {system.userName}
+
+                                                                <span className='text-muted  text-muted fs-7'>
+                                                                 {system.role &&    <span>({system.role})</span>}
+                                                                </span>
+
+                                                            </>
+                                                        </td>
+
+                                                        <td className='ps-4 w-200px text-dark text-hover-primary'> {system.email}</td>
 
 
-                                                        {/* <h5>Date............{date..format('DD-MM-YYYY')}</h5> */}
-
-                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{index + 1}</td>
-
-                                                        <td className='ps-4 w-150px text-dark  text-hover-primary'>{system.name}</td>
 
 
-                                                        {/* Categories/create-role/:id */}
 
                                                         <td className='ps-4 w-100px'>
 
-
+                                                            {/* {system.roles.length > 0 && */}
                                                             <OverlayTrigger
                                                                 delay={{ hide: 450, show: 300 }}
                                                                 overlay={(props) => (
                                                                     <Tooltip id={''} {...props}>
-                                                                        Edit Categories
+                                                                        Edit User
                                                                     </Tooltip>
                                                                 )}
                                                                 placement="top"
                                                             >
-
                                                                 <a
-                                                                    className='btn btn-icon btn-bg-warning mb-1 btn-active-color-warning btn-sm me-1'
-                                                                    onClick={() => router.push(`/employees/categories/edit/${system.id}`)}
+                                                                    className='btn btn-icon btn-bg-light mb-1 btn-active-color-warning btn-sm me-1'
+                                                                    onClick={() => router.push(`/users/edit/${system.id}`)}
                                                                 >
                                                                     <Image
                                                                         src={icon1}
@@ -244,20 +294,20 @@ const AllCategories = ({ data }) => {
                                                                 </a>
 
                                                             </OverlayTrigger>
-
+                                                            {/* } */}
 
 
                                                             <OverlayTrigger
                                                                 delay={{ hide: 450, show: 300 }}
                                                                 overlay={(props) => (
                                                                     <Tooltip id={''} {...props}>
-                                                                        Delete {system.name}
+                                                                        Delete
                                                                     </Tooltip>
                                                                 )}
                                                                 placement="top"
                                                             >
                                                                 <a
-                                                                    className='btn btn-icon btn-bg-danger btn-active-color-danger btn-sm'
+                                                                    className='btn btn-icon btn-bg-light btn-active-color-danger btn-sm'
                                                                     onClick={() => handleShow(system.id)}
 
                                                                 >
@@ -268,11 +318,9 @@ const AllCategories = ({ data }) => {
                                                                         height="23"
                                                                         className="roundedCircle"
                                                                     />
-
                                                                 </a>
 
                                                             </OverlayTrigger>
-
 
 
                                                         </td>
@@ -285,13 +333,11 @@ const AllCategories = ({ data }) => {
                                     </tbody>
                                     {/* end::Table body */}
                                 </table>
-                                {/* end::Table */}
-
-                                <Modal show={show} onHide={handleClose} className='m-5 bg-light bg-opacity-10'>
+                                <Modal show={show} onHide={handleClose} className='mt-5'>
                                     <Modal.Header closeButton>
                                         <Modal.Title>Delete Confirmation</Modal.Title>
                                     </Modal.Header>
-                                    <Modal.Body>Are You sure to want to delete this Categories
+                                    <Modal.Body>Are You sure to want to delete this User
                                     </Modal.Body>
                                     <Modal.Footer>
                                         <Button variant="secondary" onClick={handleClose}>
@@ -306,9 +352,12 @@ const AllCategories = ({ data }) => {
                                                     </span>
                                                 )}
                                             </div>
+
                                         </Button>
                                     </Modal.Footer>
                                 </Modal>
+
+                                {/* end::Table */}
                             </div>
                             {/* end::Table container */}
                         </div>
@@ -325,42 +374,4 @@ const AllCategories = ({ data }) => {
 
 }
 
-export default AllCategories
-
-
-
-// export async function getServerSideProps(context) {
-
-
-
-
-
-//     const { data } = await GetEmployeeCategories();
-
-//     console.log('data from All categories == ', data);
-
-
-//     let CookieObj = parseCookies(context.req);
-
-
-
-//     if (Object.keys(CookieObj).length == 0) {
-//         return {
-//             redirect: {
-//                 destination: '/login?callbackUrl=https://gym-app.ps-beta.com/employees/categories',
-//                 permanent: false
-//             }
-//         }
-//     }
-
-
-//     return {
-//         props: {
-//             data: data
-//         }
-//     }
-
-
-
-
-// }
+export default AllUsers 

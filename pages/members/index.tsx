@@ -117,42 +117,57 @@ const AllMembers = ({ data }) => {
     // const { data } = await GetMembers();
 
     useEffect(() => {
-      
-       AllMembers();
-    
+
+
+
+        var UserObj = Cookie.get("UserObj");
+
+
+        console.log('UserObj == ', UserObj);
+
+
+        if (UserObj == undefined) {
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/members');
+        } else {
+
+
+
+
+            AllMembers();
+        }
 
     }, [])
-    
+
     const AllMembers = () => {
         GetMembers()
-        .then(res => {
-            SetMembers(res.data);
-            setLoading(false);
-        })
-        .catch(err => {
-            setLoading(false);
+            .then(res => {
+                SetMembers(res.data);
+                setLoading(false);
+            })
+            .catch(err => {
+                setLoading(false);
 
-            let Obj = err.toJSON();
-            console.log('1111111');
-            console.log('Obj', Obj);
-            if (Obj.message === 'Network Error') {
+                let Obj = err.toJSON();
+                console.log('1111111');
+                console.log('Obj', Obj);
+                if (Obj.message === 'Network Error') {
 
-                toast.error('API Server is down....', { position: toast.POSITION.BOTTOM_RIGHT });
+                    toast.error('API Server is down....', { position: toast.POSITION.BOTTOM_RIGHT });
 
-                setHasErrors('API Server is down....');
-            }
-            else {
-                let obj2 =
-                    JSON.parse(
-                    Obj.message
-                  );
+                    setHasErrors('API Server is down....');
+                }
+                else {
+                    let obj2 =
+                        JSON.parse(
+                            Obj.message
+                        );
 
-                toast.error(Obj.message, { position: toast.POSITION.BOTTOM_RIGHT });
+                    toast.error(Obj.message, { position: toast.POSITION.BOTTOM_RIGHT });
 
-                setHasErrors(obj2.errorMessage);
+                    setHasErrors(obj2.errorMessage);
 
-            }
-        })
+                }
+            })
     }
 
     // const Members: [MemberListingModel] = data;
@@ -196,16 +211,16 @@ const AllMembers = ({ data }) => {
 
     const handleClose4 = () => setShow4(false);
 
-    const [logMsgs, setLogMsgs] = useState([{id : 0, logMsg : ''}])
+    const [logMsgs, setLogMsgs] = useState([{ id: 0, logMsg: '' }])
 
     const handleShow4 = (id: number) => {
         console.log('id in handleShow4---', id);
         setShow4(true);
 
         axios.get(`${API_URL}/api/Log/LogsByMember/${id}`)
-        .then(res => {
-            setLogMsgs(res.data);
-        })
+            .then(res => {
+                setLogMsgs(res.data);
+            })
 
 
     };
@@ -217,7 +232,7 @@ const AllMembers = ({ data }) => {
     const handleClose3 = () => setShow3(false);
 
     const [memberIdtoBUpdated, setMemberIdtoBUpdated] = useState(0);
-    
+
 
     const [showDeactivateSpinner, SetShowDeactivateSpinner] = useState(false);
 
@@ -522,7 +537,7 @@ const AllMembers = ({ data }) => {
 
                                                                 <a
                                                                     className='btn btn-icon btn-bg-warning mb-1 btn-active-color-warning btn-sm me-1'
-                                                                onClick={() => handleShow4(system.id)}
+                                                                    onClick={() => handleShow4(system.id)}
 
                                                                 // onClick={
                                                                 // () => router.push(`/members/details/${system.id}`)
@@ -904,14 +919,14 @@ const AllMembers = ({ data }) => {
                                         <Modal.Title>Log Info of Member</Modal.Title>
                                     </Modal.Header>
                                     <Modal.Body>
-                                        
-                                    {logMsgs.map(log =>   (
-                                        <>
-                                          <div className='m-2 bg-light border p-2 border-1'>
-                                              {log.logMsg}
-                                          </div>
-                                        </>
-                                    ))}
+
+                                        {logMsgs.map(log => (
+                                            <>
+                                                <div className='m-2 bg-light border p-2 border-1'>
+                                                    {log.logMsg}
+                                                </div>
+                                            </>
+                                        ))}
                                     </Modal.Body>
 
                                 </Modal>

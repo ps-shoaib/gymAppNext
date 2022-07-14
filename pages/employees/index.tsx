@@ -21,6 +21,8 @@ import icon3 from '../../assets/svgs/arr075.svg'
 
 import { parseCookies } from 'src/parseCookies'
 
+import Cookie from 'js-cookie'
+
 import Image from 'next/image'
 
 const AllEmployees = ({ data }) => {
@@ -53,8 +55,8 @@ const AllEmployees = ({ data }) => {
                 else {
                     let obj2 =
                         JSON.parse(
-                        Obj.message
-                      );
+                            Obj.message
+                        );
 
                     toast.error(Obj.message, { position: toast.POSITION.BOTTOM_RIGHT });
 
@@ -64,13 +66,33 @@ const AllEmployees = ({ data }) => {
 
             })
     }
+
+    const [isManager, setIsManager] = useState(false)
+
     useEffect(() => {
 
-        GetAllEmps();
+        var UserObj = Cookie.get("UserObj");
+
+
+        console.log('UserObj == ', UserObj);
+
+
+
+
+
+        if (UserObj == undefined) {
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/employees');
+        } else {
+
+            setIsManager(JSON.parse(UserObj).role == 'Manager');
+
+            GetAllEmps();
+        }
 
     }, [])
 
 
+    
     // const Employees = data;
 
     const [show, setShow] = useState(false);
@@ -101,9 +123,9 @@ const AllEmployees = ({ data }) => {
                 handleClose();
 
                 SetshowDeleteSpinner(false);
-                
+
                 GetAllEmps();
-                
+
                 toast.warning('Employee deleted successfully', { position: toast.POSITION.TOP_RIGHT });
 
                 router.push('/employees');
@@ -140,6 +162,7 @@ const AllEmployees = ({ data }) => {
                             <div className='card-toolbar'>
                                 <a className='btn btn-sm btn-primary m-1 p-2 d-flex'
                                     onClick={() => router.push('/employees/create')}
+                                    style={{'pointerEvents' : isManager ? 'none' : 'auto'}}
                                 >
                                     <Image
                                         src={icon3}
@@ -232,6 +255,7 @@ const AllEmployees = ({ data }) => {
                                                                 <a
                                                                     className='btn btn-icon btn-bg-warning mb-1 btn-active-color-warning btn-sm me-1'
                                                                     onClick={() => router.push(`/employees/edit/${system.id}`)}
+                                                                    style={{'pointerEvents' : isManager ? 'none' : 'auto'}}
                                                                 >
                                                                     <Image
                                                                         src={icon1}
@@ -258,7 +282,7 @@ const AllEmployees = ({ data }) => {
                                                                 <a
                                                                     className='btn btn-icon btn-bg-danger btn-active-color-danger btn-sm'
                                                                     onClick={() => handleShow(system.id)}
-
+                                                                    style={{'pointerEvents' : isManager ? 'none' : 'auto'}}
                                                                 >
                                                                     <Image
                                                                         src={icon2}
