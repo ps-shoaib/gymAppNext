@@ -144,15 +144,18 @@ const AddEditExpenseComponent = ({ data }) => {
         var UserObj = Cookie.get("UserObj");
 
 
-        console.log('UserObj == ', UserObj);
+        console.log('UserObj  in AddEditExpenseComponent **&&** == ', UserObj);
 
 
         if (UserObj == undefined) {
             router.push('/login?callbackUrl=https://gym-app.ps-beta.com/expenses/create');
         } else {
 
+
+
             if (!isAddMode) {
                 values.Created_By = data.created_By;
+                values.UpdatedBy = JSON.parse(UserObj).id;
             }
             else {
 
@@ -222,8 +225,8 @@ const AddEditExpenseComponent = ({ data }) => {
                                     else {
                                         let obj2 =
                                             JSON.parse(
-                                            Obj.message
-                                         );
+                                                Obj.message
+                                            );
 
                                         toast.error(obj2.errorMessage, { position: toast.POSITION.BOTTOM_RIGHT });
 

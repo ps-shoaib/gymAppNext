@@ -119,11 +119,13 @@ const AllExpenses = ({ data }) => {
                 console.log('res from DeleteExpenses----', res);
                 handleClose();
 
-                SetshowDeleteSpinner(false);
                 AllExpenses();
+                
+                SetshowDeleteSpinner(false);
+                
                 toast.warning('Expenses deleted successfully', { position: toast.POSITION.TOP_RIGHT });
 
-                router.push('/expenses');
+                // router.push('/expenses');
 
             })
             .catch(err => {

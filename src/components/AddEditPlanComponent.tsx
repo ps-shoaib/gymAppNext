@@ -72,7 +72,8 @@ const AddEditPlanComponent = ({ data }) => {
             router.push('/login?callbackUrl=https://gym-app.ps-beta.com/plan/create');
         } else {
             if (!isAddMode) {
-                values.Created_By = data.created_By;
+                                values.Created_By = data.created_By;
+                values.UpdatedBy = JSON.parse(UserObj).id;
             }
             else {
 

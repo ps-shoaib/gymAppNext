@@ -256,7 +256,7 @@ const AllMembers = ({ data }) => {
         console.log('id in handleUpdateStatus ---', memberIdtoBUpdated);
         SetShowDeactivateSpinner(true);
 
-        const values = { Id: memberIdtoBUpdated, ActiveStatus: UpdateStatus, Created_By: '' };
+        const values = { Id: memberIdtoBUpdated, ActiveStatus: UpdateStatus, UpdatedBy: '' };
 
 
         var UserObj = Cookie.get("UserObj");
@@ -265,8 +265,8 @@ const AllMembers = ({ data }) => {
             router.push('/login?callbackUrl=https://gym-app.ps-beta.com/members');
         } else {
             console.log('UserObj == ', JSON.parse(UserObj).id);
-            values.Created_By = JSON.parse(UserObj).id;
 
+            values.UpdatedBy = JSON.parse(UserObj).id;
 
 
             axios.put(`${API_URL}/api/Member/UpdateStatus/${memberIdtoBUpdated}`, values)
@@ -352,7 +352,7 @@ const AllMembers = ({ data }) => {
                 SetShowRejoinSpinner(true);
 
                 const values = {
-                    Created_By: '', Id: memberIdtoBRejoin, Plan_Id: Plan, Is_Trainer_Required: isTrainerRequired,
+                    UpdatedBy: '', Id: memberIdtoBRejoin, Plan_Id: Plan, Is_Trainer_Required: isTrainerRequired,
                     CreatedOn: formatDate(startDate), Employee_Id: 0, TrainingFee: 0
                 };
 
@@ -362,7 +362,7 @@ const AllMembers = ({ data }) => {
                 if (UserObj == undefined) {
                     router.push('/login?callbackUrl=https://gym-app.ps-beta.com/members');
                 } else {
-                    values.Created_By = JSON.parse(UserObj).id;
+                    values.UpdatedBy = JSON.parse(UserObj).id;
 
                     if (isTrainerRequired == true) {
                         values.Employee_Id = TrainerType;

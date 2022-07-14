@@ -118,7 +118,8 @@ const AddEditEmployeeComponent = ({ data }) => {
         } else {
 
             if (!isAddMode) {
-                values.Created_By = data.created_By;
+                                values.Created_By = data.created_By;
+                values.UpdatedBy = JSON.parse(UserObj).id;
             }
             else {
 

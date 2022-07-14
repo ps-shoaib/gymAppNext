@@ -13,6 +13,8 @@ import icon1 from '../../assets/svgs/art005.svg'
 import icon2 from '../../assets/svgs/gen027.svg'
 import icon3 from '../../assets/svgs/arr075.svg'
 import icon4 from '../../assets/svgs/eyefill.svg'
+import icon8 from '../../assets/svgs/file.svg'
+
 import Cookie from 'js-cookie'
 
 import Image from 'next/image'
@@ -69,7 +71,7 @@ const AllUsers = () => {
             : users.filter(item =>
                 item.userName?.toLocaleLowerCase().includes(search) ||
                 //  item.phoneNumber?.includes(search) ||
-                item.email?.toLocaleLowerCase().includes(search)  
+                item.email?.toLocaleLowerCase().includes(search)
                 // || item.gender?.includes(search) ||
                 // item.address?.toLocaleLowerCase().includes(search)
             )
@@ -136,23 +138,43 @@ const AllUsers = () => {
     }
 
 
-
     useEffect(
         () => {
             var UserObj = Cookie.get("UserObj");
 
 
             console.log('UserObj == ', UserObj);
-    
-    
+
+
             if (UserObj == undefined) {
                 router.push('/login?callbackUrl=https://gym-app.ps-beta.com/users');
             } else {
-    
-            GetUsers()
+
+
+                GetUsers()
             }
         }, []
     )
+
+
+    const [showLogMsgs, setShowLogMsgs] = useState(false);
+
+    const handleCloseModal = () => setShowLogMsgs(false);
+
+    const [logMsgs, setLogMsgs] = useState([{ id: 0, logMsg: '' }])
+
+
+    const handleShowMembersLog = (id: string) => {
+        console.log('id in handleShow4---', id);
+        setShowLogMsgs(true);
+
+        axios.get(`${API_URL}/api/Log/ManagerLogs/${id}`)
+            .then(res => {
+                setLogMsgs(res.data);
+            })
+
+
+    };
 
 
 
@@ -256,7 +278,7 @@ const AllUsers = () => {
                                                                 {system.userName}
 
                                                                 <span className='text-muted  text-muted fs-7'>
-                                                                 {system.role &&    <span>({system.role})</span>}
+                                                                    {system.role && <span>({system.role})</span>}
                                                                 </span>
 
                                                             </>
@@ -321,6 +343,39 @@ const AllUsers = () => {
                                                                 </a>
 
                                                             </OverlayTrigger>
+                                                            {system.role == "Manager" &&
+
+                                                                <OverlayTrigger
+                                                                    delay={{ hide: 450, show: 300 }}
+                                                                    overlay={(props) => (
+                                                                        <Tooltip id={''} {...props}>
+                                                                            Log Info
+                                                                        </Tooltip>
+                                                                    )}
+                                                                    placement="top"
+                                                                >
+
+                                                                    <a
+                                                                        className='btn btn-icon btn-bg-warning mb-1 btn-active-color-warning btn-sm me-1'
+                                                                        onClick={() => handleShowMembersLog(system.id)}
+
+
+
+                                                                    // onClick={
+                                                                    // () => router.push(`/members/details/${system.id}`)
+                                                                    // }
+                                                                    >
+                                                                        <Image
+                                                                            src={icon8}
+                                                                            alt={icon8}
+                                                                            width="23"
+                                                                            height="23"
+                                                                        // className="roundedCircle"
+                                                                        />
+                                                                    </a>
+
+                                                                </OverlayTrigger>
+                                                            }
 
 
                                                         </td>
@@ -356,6 +411,25 @@ const AllUsers = () => {
                                         </Button>
                                     </Modal.Footer>
                                 </Modal>
+
+
+                                <Modal show={showLogMsgs} onHide={handleCloseModal} className='mt-5 bg-light bg-opacity-10'>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Log Info of Member</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+
+                                        {logMsgs.map(log => (
+                                            <>
+                                                <div className='m-2 bg-light border p-2 border-1'>
+                                                    {log.logMsg}
+                                                </div>
+                                            </>
+                                        ))}
+                                    </Modal.Body>
+
+                                </Modal>
+
 
                                 {/* end::Table */}
                             </div>

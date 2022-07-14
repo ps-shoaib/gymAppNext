@@ -46,40 +46,45 @@ const AllCategories = ({ data }) => {
             router.push('/login?callbackUrl=https://gym-app.ps-beta.com/employees/categories');
         } else {
 
-            GetEmployeeCategories()
-                .then(res => {
-                    SetCategories(res.data);
-                    setLoading(false);
-                })
-                .catch(err => {
-                    setLoading(false);
+            GetAll();
 
-                    let Obj = err.toJSON();
-                    console.log('1111111');
-                    console.log('Obj', Obj);
-                    if (Obj.message === 'Network Error') {
-
-                        toast.error('API Server is down....', { position: toast.POSITION.BOTTOM_RIGHT });
-
-                        setHasErrors('API Server is down....');
-                    }
-                    else {
-                        let obj2 =
-                            JSON.parse(
-                                Obj.message
-                            );
-
-                        toast.error(Obj.message, { position: toast.POSITION.BOTTOM_RIGHT });
-
-                        setHasErrors(obj2.errorMessage);
-
-                    }
-                })
         }
 
     }, [])
 
 
+    const GetAll = () => {
+        GetEmployeeCategories()
+        .then(res => {
+            SetCategories(res.data);
+            setLoading(false);
+        })
+        .catch(err => {
+            setLoading(false);
+
+            let Obj = err.toJSON();
+            console.log('1111111');
+            console.log('Obj', Obj);
+            if (Obj.message === 'Network Error') {
+
+                toast.error('API Server is down....', { position: toast.POSITION.BOTTOM_RIGHT });
+
+                setHasErrors('API Server is down....');
+            }
+            else {
+                let obj2 =
+                    JSON.parse(
+                        Obj.message
+                    );
+
+                toast.error(Obj.message, { position: toast.POSITION.BOTTOM_RIGHT });
+
+                setHasErrors(obj2.errorMessage);
+
+            }
+        })
+
+    }
 
     // const Categories = data;
 
@@ -111,10 +116,10 @@ const AllCategories = ({ data }) => {
                 handleClose();
 
                 SetshowDeleteSpinner(false);
-
+                GetAll();
                 toast.warning('Employee Category deleted successfully', { position: toast.POSITION.TOP_RIGHT });
 
-                router.push('/employees/categories');
+                // router.push('/employees/categories');
 
             })
             .catch(err => {
