@@ -102,8 +102,16 @@ const AllPlans = ({ data }) => {
         console.log('id in handle Delete---', IdtoBDeleted);
         SetshowDeleteSpinner(true);
 
+        var UserObj = Cookie.get("UserObj");
 
-        DeletePlan(IdtoBDeleted)
+        let DeletedBy = '';
+        if (UserObj == undefined) {
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/plan');
+        } else {
+            DeletedBy = JSON.parse(UserObj).id;
+        }
+
+        DeletePlan(IdtoBDeleted, DeletedBy)
             .then(res => {
                 console.log('res from DeletePlan----', res);
                 handleClose();

@@ -61,8 +61,8 @@ export function UpdateFee(id: number, model: any) {
     return axios.put(`${Fee_URL}/${id}`, model,config);
 }
 
-export function DeleteFee(id: number) {
-    return axios.delete(`${Fee_URL}/${id}`,config);
+export function DeleteFee(id: number, DeletedBy : any) {
+    return axios.delete(`${Fee_URL}/${id}?DeletedBy=${DeletedBy}`,config);
 }
 
 

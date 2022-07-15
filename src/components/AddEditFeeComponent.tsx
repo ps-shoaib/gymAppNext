@@ -14,7 +14,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import DateView from 'react-datepicker'
 import icon1 from 'assets/svgs/backarrow.svg'
-import { GetMembers } from 'src/Services/MemberService'
+import { GetActiveMembers, GetMembers } from 'src/Services/MemberService'
 
 
 import icon3 from '../../assets/svgs/calendar.svg'
@@ -56,7 +56,7 @@ const AddEditFeeComponent = ({ data }) => {
     useEffect(
         () => {
             console.log('calling setMemberDropdownOptions');
-            GetMembers()
+            GetActiveMembers()
                 .then(res => {
                     // setMemberDropdownOptions(res.data);
                     res.data.map(member => {

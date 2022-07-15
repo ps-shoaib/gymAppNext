@@ -102,9 +102,19 @@ const AllCategories = ({ data }) => {
         console.log('id in handle Delete---', IdtoBDeleted);
         SetshowDeleteSpinner(true);
 
+        var UserObj = Cookie.get("UserObj");
+
+        let DeletedBy = '';
+        if (UserObj == undefined) {
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/expenses/type');
+        } else {
+            DeletedBy = JSON.parse(UserObj).id;
+        }
+
+        
 
 
-        DeleteExpenseType(IdtoBDeleted)
+        DeleteExpenseType(IdtoBDeleted,DeletedBy)
             .then(res => {
                 console.log('res from DeleteType----', res);
                 handleClose();

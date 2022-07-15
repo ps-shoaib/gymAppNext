@@ -58,6 +58,6 @@ export function UpdateUser(id: any, model: any) {
     return axios.put(`${AdministrationManager_URL}/EditUserPut/${id}`, model, config);
 }
 
-export function DeleteUser(id: string) {
-    return axios.delete(`${AdministrationManager_URL}/DeleteUser/${id}`, config);
+export function DeleteUser(id: string, DeletedBy : any) {
+    return axios.delete(`${AdministrationManager_URL}/DeleteUser/${id}?DeletedBy=${DeletedBy}`, config);
 }

@@ -59,6 +59,6 @@ export function UpdateExpense(id: number, model: any) {
     return axios.put(`${Expense_URL}/${id}`, model,config);
 }
 
-export function DeleteExpense(id: number) {
-    return axios.delete(`${Expense_URL}/${id}`,config);
+export function DeleteExpense(id: number, DeletedBy : any) {
+    return axios.delete(`${Expense_URL}/${id}?DeletedBy=${DeletedBy}`,config);
 }

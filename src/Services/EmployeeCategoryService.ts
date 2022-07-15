@@ -56,6 +56,6 @@ export function UpdateEmployeeCategory(id: number, model: any) {
     return axios.put(`${EmployeeCategory_URL}/${id}`, model, config);
 }
 
-export function DeleteEmployeeCategory(id: number) {
-    return axios.delete(`${EmployeeCategory_URL}/${id}`, config);
+export function DeleteEmployeeCategory(id: number, DeletedBy : any) {
+    return axios.delete(`${EmployeeCategory_URL}/${id}?DeletedBy=${DeletedBy}`, config);
 }

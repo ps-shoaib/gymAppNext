@@ -54,6 +54,6 @@ export function UpdateEmployee(id: number, model: any) {
     return axios.put(`${Employee_URL}/${id}`, model,config);
 }
 
-export function DeleteEmployee(id: number) {
-    return axios.delete(`${Employee_URL}/${id}` ,config);
+export function DeleteEmployee(id: number, DeletedBy : any) {
+    return axios.delete(`${Employee_URL}/${id}?DeletedBy=${DeletedBy}` ,config);
 }

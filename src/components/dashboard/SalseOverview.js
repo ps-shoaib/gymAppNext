@@ -31,7 +31,7 @@ const SalesOverview = ({ Dates, RevenueByDate }) => {
       opacity: 1,
     },
     chart: {
-      offsetX: -15,
+      offsetX: 0,
       toolbar: {
         show: true,
       },
@@ -80,13 +80,13 @@ const SalesOverview = ({ Dates, RevenueByDate }) => {
       //  tickAmount: RevenueByDate?.length > 0 ? Math.max(...RevenueByDate) : '10',
       labels: {
         style: {
-          cssClass: "grey--text lighten-2--text fill-color",
+          cssClass: "grey--text lighten-2--text fill-color ",
         },
       },
     },
     stroke: {
       show: true,
-      width: 50,
+      width: 100,
       lineCap: "butt",
       colors: ["transparent"],
     },
@@ -107,7 +107,7 @@ const SalesOverview = ({ Dates, RevenueByDate }) => {
 
   ];
   return (
-    <BaseCard title={`Revenue by Last 30 Dates`} 
+    <BaseCard title={`Current Month Revenue`} 
     // description={`(Total ${TotalMembersLoginInLastMonth} Logins of Last Month)`}
     >
       <span className="text-muted">Revenue</span>
@@ -118,7 +118,7 @@ const SalesOverview = ({ Dates, RevenueByDate }) => {
         type="bar"
         height="450px"
       />
-      <span className="d-flex justify-content-center text-muted"> Last 30 Dates </span>
+      <span className="d-flex justify-content-center text-muted"> Current Month Dates </span>
     </BaseCard>
   );
 };

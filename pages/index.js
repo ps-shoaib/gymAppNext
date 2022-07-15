@@ -9,9 +9,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from '../src/Services/authService'
 import Image from 'next/image'
-import icon1 from '../assets/svgs/userCount.svg'
+import icon1 from '../assets/svgs/person-fill.svg'
 import icon2 from '../assets/svgs/creditCard.svg'
 import icon3 from '../assets/svgs/cash.svg'
+import icon4 from '../assets/svgs/person-check-fill.svg'
 
 export default function Index() {
 
@@ -77,8 +78,7 @@ export default function Index() {
 
         public float FeeTotal { get; set; } */}
 
-
-        <div className='col-sm-4'>
+        <div className='col-sm-3'>
 
           <div className={` bg-${'secondary'}  ${'card-xl-stretch mb-xl-8 rounded'}`} style={{ 'cursor': 'default' }}>
             {/* begin::Body */}
@@ -95,14 +95,44 @@ export default function Index() {
 
               <div className={`fw-bold text-inverse-${'warning'} text-light fs-4 mt-2`}>{DashboardDataObj.totalMembersLogin}</div>
 
-              <div className={`text-inverse-${'warning'} text-light fs-4 mb-2 mt-2`}>{'Total Members'}</div>
+              <div className={`text-inverse-${'warning'} text-light fs-4 mb-2 mt-2`}>{'Total Logged In Members'}</div>
             </div>
             {/* end::Body */}
           </div>
 
         </div>
 
-        <div className='col-sm-4'>
+        {/* "totalActiveMembers": 8,
+  "totalMembersLogin": 9,
+  "currentMonthTotalExpenses": 200000,
+  "currentMonthFeeTotal": 139000, */}
+
+        <div className='col-sm-3'>
+
+          <div className={` bg-${'info'}  ${'card-xl-stretch mb-xl-8 rounded'}`} style={{ 'cursor': 'default' }}>
+            {/* begin::Body */}
+            <div className='card-body'>
+              {/* <KTSVG path={svgIcon} className={`svg-icon-${iconColor} svg-icon-3x ms-n1`} /> */}
+              <Image
+                src={icon4}
+                alt={icon4}
+                width="40"
+                height="40"
+              // className="roundedCircle"
+              />
+
+
+              <div className={`fw-bold text-inverse-${'warning'} text-light fs-4 mt-2`}>{DashboardDataObj.totalActiveMembers}</div>
+
+              <div className={`text-inverse-${'warning'} text-light fs-4 mb-2 mt-2`}>{'Total Active Logged In Members'}</div>
+            </div>
+            {/* end::Body */}
+          </div>
+
+        </div>
+
+
+        <div className='col-sm-3'>
 
           <div className={` bg-${'danger'}  ${'card-xl-stretch mb-xl-8 rounded'}`} style={{ 'cursor': 'default' }}>
             {/* begin::Body */}
@@ -116,9 +146,9 @@ export default function Index() {
               />
 
 
-              <div className={`fw-bold text-inverse-${'warning'}  text-light fs-4 mt-2`}>{DashboardDataObj.totalExpenses}</div>
+              <div className={`fw-bold text-inverse-${'warning'}  text-light fs-4 mt-2`}>{DashboardDataObj.currentMonthTotalExpenses}</div>
 
-              <div className={`text-inverse-${'warning'} text-light  fs-4 mb-2 mt-2`}>{'Total Expenses'}</div>
+              <div className={`text-inverse-${'warning'} text-light  fs-4 mb-2 mt-2`}>{'Current Month Total Expenses'}</div>
 
             </div>
             {/* end::Body */}
@@ -126,7 +156,7 @@ export default function Index() {
 
         </div>
 
-        <div className='col-sm-4'>
+        <div className='col-sm-3'>
 
           <div className={` bg-${'primary'}  ${'card rounded'}`} style={{ 'cursor': 'default' }}>
             {/* begin::Body */}
@@ -141,9 +171,9 @@ export default function Index() {
               />
 
 
-              <div className={`fw-bold text-inverse-${'primary'} text-light fs-4 mt-2`}>{DashboardDataObj.feeTotal}</div>
+              <div className={`fw-bold text-inverse-${'primary'} text-light fs-4 mt-2`}>{DashboardDataObj.currentMonthFeeTotal}</div>
 
-              <div className={`text-inverse-${'primary'} text-light  fs-4 mb-2 mt-2`}>{'Total Fee Collection'}</div>
+              <div className={`text-inverse-${'primary'} text-light  fs-4 mb-2 mt-2`}>{'Current Total Fee Collection'}</div>
 
 
 
@@ -157,8 +187,8 @@ export default function Index() {
 
       <Grid item xs={12} lg={12}>
         <SalesOverview
-          Dates={DashboardDataObj.lastThirtyDays}
-          RevenueByDate={DashboardDataObj.lastThirtyDaysRevenue}
+          Dates={DashboardDataObj.currentMonth}
+          RevenueByDate={DashboardDataObj.currentMonthRevenue}
         />
       </Grid>
       {/* ------------------------- row 1 ------------------------- */}

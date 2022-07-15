@@ -113,8 +113,16 @@ const AllExpenses = ({ data }) => {
         console.log('id in handle Delete---', IdtoBDeleted);
         SetshowDeleteSpinner(true);
 
+        var UserObj = Cookie.get("UserObj");
 
-        DeleteExpense(IdtoBDeleted)
+        let DeletedBy = '';
+        if (UserObj == undefined) {
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/expenses');
+        } else {
+            DeletedBy = JSON.parse(UserObj).id;
+        }
+
+        DeleteExpense(IdtoBDeleted, DeletedBy)
             .then(res => {
                 console.log('res from DeleteExpenses----', res);
                 handleClose();

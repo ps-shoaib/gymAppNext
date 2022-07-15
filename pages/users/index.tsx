@@ -85,7 +85,16 @@ const AllUsers = () => {
         console.log('id in handle Delete---', IdtoBDeleted);
         SetshowDeleteSpinner(true);
 
-        DeleteUser(IdtoBDeleted)
+        var UserObj = Cookie.get("UserObj");
+
+        let DeletedBy = '';
+        if (UserObj == undefined) {
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/users');
+        } else {
+            DeletedBy = JSON.parse(UserObj).id;
+        }
+
+        DeleteUser(IdtoBDeleted,DeletedBy)
             .then(res => {
                 SetshowDeleteSpinner(false);
                 handleClose();
@@ -416,7 +425,7 @@ const AllUsers = () => {
 
                                 <Modal show={showLogMsgs} onHide={handleCloseModal} className='mt-5 bg-light bg-opacity-10'>
                                     <Modal.Header closeButton>
-                                        <Modal.Title>Log Info of Member</Modal.Title>
+                                        <Modal.Title>Log Info of User</Modal.Title>
                                     </Modal.Header>
                                     <Modal.Body>
 

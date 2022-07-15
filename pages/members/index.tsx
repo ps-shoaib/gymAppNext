@@ -313,8 +313,18 @@ const AllMembers = ({ data }) => {
         console.log('id in handle Delete---', IdtoBDeleted);
         SetshowDeleteSpinner(true);
 
+        var UserObj = Cookie.get("UserObj");
 
-        DeleteMember(IdtoBDeleted)
+        let DeletedBy = '';
+        if (UserObj == undefined) {
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/members');
+        } else {
+            DeletedBy = JSON.parse(UserObj).id;
+        }
+
+
+
+        DeleteMember(IdtoBDeleted, DeletedBy)
             .then(res => {
                 console.log('res from DeleteMember----', res);
                 handleClose();

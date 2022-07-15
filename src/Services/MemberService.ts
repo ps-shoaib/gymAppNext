@@ -48,6 +48,10 @@ export function GetMembers() {
 }
 
 
+export function GetActiveMembers() {
+    return axios.get(`${Member_URL}/GetActiveMembers`, config);
+}
+
 export function GetMemberById(id: number) {
     return axios.get(`${Member_URL}/${id}`, config);
 }
@@ -64,8 +68,8 @@ export function UpdateMember(id: number, model: any) {
     return axios.put(`${Member_URL}/${id}`, model,config);
 }
 
-export function DeleteMember(id: number) {
-    return axios.delete(`${Member_URL}/${id}`,config);
+export function DeleteMember(id: number, DeletedBy : any) {
+    return axios.delete(`${Member_URL}/${id}?DeletedBy=${DeletedBy}`,config);
 }
 
 export function GetTrainers() {

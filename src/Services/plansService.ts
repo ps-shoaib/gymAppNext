@@ -59,6 +59,6 @@ export function UpdatePlan(id: number, model: any) {
     return axios.put(`${Plan_URL}/${id}`, model,config);
 }
 
-export function DeletePlan(id: number) {
-    return axios.delete(`${Plan_URL}/${id}`,config);
+export function DeletePlan(id: number, DeletedBy : any) {
+    return axios.delete(`${Plan_URL}/${id}?DeletedBy=${DeletedBy}`,config);
 }

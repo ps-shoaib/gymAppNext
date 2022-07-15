@@ -115,9 +115,17 @@ const AllEmployees = ({ data }) => {
 
         console.log('id in handle Delete---', IdtoBDeleted);
         SetshowDeleteSpinner(true);
+        var UserObj = Cookie.get("UserObj");
+
+        let DeletedBy = '';
+        if (UserObj == undefined) {
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/employees');
+        } else {
+            DeletedBy = JSON.parse(UserObj).id;
+        }
 
 
-        DeleteEmployee(IdtoBDeleted)
+        DeleteEmployee(IdtoBDeleted, DeleteEmployee)
             .then(res => {
                 console.log('res from DeleteEmployee----', res);
                 handleClose();
@@ -255,7 +263,7 @@ const AllEmployees = ({ data }) => {
                                                                 <a
                                                                     className='btn btn-icon btn-bg-warning mb-1 btn-active-color-warning btn-sm me-1'
                                                                     onClick={() => router.push(`/employees/edit/${system.id}`)}
-                                                                    style={{'pointerEvents' : isManager ? 'none' : 'auto'}}
+                                                                    // style={{'pointerEvents' : isManager ? 'none' : 'auto'}}
                                                                 >
                                                                     <Image
                                                                         src={icon1}
@@ -282,7 +290,7 @@ const AllEmployees = ({ data }) => {
                                                                 <a
                                                                     className='btn btn-icon btn-bg-danger btn-active-color-danger btn-sm'
                                                                     onClick={() => handleShow(system.id)}
-                                                                    style={{'pointerEvents' : isManager ? 'none' : 'auto'}}
+                                                                    // style={{'pointerEvents' : isManager ? 'none' : 'auto'}}
                                                                 >
                                                                     <Image
                                                                         src={icon2}

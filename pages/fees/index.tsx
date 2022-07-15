@@ -117,8 +117,16 @@ const AllFees = ({ data }) => {
         console.log('id in handle Delete---', IdtoBDeleted);
         SetshowDeleteSpinner(true);
 
+        var UserObj = Cookie.get("UserObj");
 
-        DeleteFee(IdtoBDeleted)
+        let DeletedBy = '';
+        if (UserObj == undefined) {
+            router.push('/login?callbackUrl=https://gym-app.ps-beta.com/fees');
+        } else {
+            DeletedBy = JSON.parse(UserObj).id;
+        }
+
+        DeleteFee(IdtoBDeleted, DeletedBy)
             .then(res => {
                 console.log('res from DeleteFee----', res);
                 handleClose();
