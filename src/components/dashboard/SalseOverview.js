@@ -21,7 +21,7 @@ const SalesOverview = ({ Dates, RevenueByDate }) => {
         horizontal: false,
         columnWidth: "42%",
         endingShape: "rounded",
-        borderRadius: 5,
+        borderRadius: 15,
       },
     },
 
@@ -42,7 +42,7 @@ const SalesOverview = ({ Dates, RevenueByDate }) => {
       },
     },
     dataLabels: {
-      enabled: true,
+      enabled: false,
     },
     markers: {
       size: 10,
@@ -86,7 +86,7 @@ const SalesOverview = ({ Dates, RevenueByDate }) => {
     },
     stroke: {
       show: true,
-      width: 100,
+      width: 50,
       lineCap: "butt",
       colors: ["transparent"],
     },
